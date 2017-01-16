@@ -4,6 +4,8 @@ A simple easy-to-integrate Camera Fragment for Android
 
 CameraFragment preview directly the camera view, and provides a easy API to capture or manage the device
 
+You can setup your own layout and control the camera using CameraFragment
+
 [![png](https://raw.githubusercontent.com/florent37/CameraFragment/master/media/sample.png)](https://github.com/florent37/CameraFragment)
 
 ```java
