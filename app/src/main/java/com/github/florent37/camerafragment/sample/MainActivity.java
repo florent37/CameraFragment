@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.settings_view)
+    @OnClick(R.id.photo_video_camera_switcher)
     public void onMediaActionSwitchClicked(){
         final CameraFragmentApi cameraFragment = getCameraFragment();
         if (cameraFragment != null) {
