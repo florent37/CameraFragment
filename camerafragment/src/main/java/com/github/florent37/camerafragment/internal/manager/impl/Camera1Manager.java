@@ -230,7 +230,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
         numberOfCameras = Camera.getNumberOfCameras();
 
         for (int i = 0; i < numberOfCameras; ++i) {
-            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+            final Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
 
             Camera.getCameraInfo(i, cameraInfo);
             if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
@@ -256,8 +256,8 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
             } else
                 camcorderProfile = CameraHelper.getCamcorderProfile(configurationProvider.getMediaQuality(), currentCameraId);
 
-            List<Size> previewSizes = Size.fromList(camera.getParameters().getSupportedPreviewSizes());
-            List<Size> pictureSizes = Size.fromList(camera.getParameters().getSupportedPictureSizes());
+            final List<Size> previewSizes = Size.fromList(camera.getParameters().getSupportedPreviewSizes());
+            final List<Size> pictureSizes = Size.fromList(camera.getParameters().getSupportedPictureSizes());
             List<Size> videoSizes;
             if (Build.VERSION.SDK_INT > 10)
                 videoSizes = Size.fromList(camera.getParameters().getSupportedVideoSizes());
@@ -360,11 +360,11 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
 
     private void startPreview(SurfaceHolder surfaceHolder) {
         try {
-            Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+            final Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(currentCameraId, cameraInfo);
             int cameraRotationOffset = cameraInfo.orientation;
 
-            Camera.Parameters parameters = camera.getParameters();
+            final Camera.Parameters parameters = camera.getParameters();
             setAutoFocus(camera, parameters);
             setFlashMode(configurationProvider.getFlashMode());
 
@@ -374,7 +374,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
             else if (configurationProvider.getMediaAction() == Configuration.MEDIA_ACTION_PHOTO)
                 turnVideoCameraFeaturesOn(camera, parameters);
 
-            int rotation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+            final int rotation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
             int degrees = 0;
             switch (rotation) {
                 case Surface.ROTATION_0:
@@ -475,7 +475,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
     }
 
     private void setCameraPhotoQuality(Camera camera) {
-        Camera.Parameters parameters = camera.getParameters();
+        final Camera.Parameters parameters = camera.getParameters();
 
         parameters.setPictureFormat(PixelFormat.JPEG);
 
@@ -495,7 +495,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
 
     @Override
     protected int getPhotoOrientation(@Configuration.SensorPosition int sensorPosition) {
-        int rotate;
+        final int rotate;
         if (currentCameraId.equals(faceFrontCameraId)) {
             rotate = (360 + faceFrontCameraOrientation + configurationProvider.getDegrees()) % 360;
         } else {
@@ -534,7 +534,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
                 break;// Landscape right
         }
 
-        int rotate;
+        final int rotate;
         if (currentCameraId.equals(faceFrontCameraId)) {
             rotate = (360 + faceFrontCameraOrientation + degrees) % 360;
         } else {
@@ -544,7 +544,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
     }
 
     protected void onPictureTaken(final byte[] bytes, Camera camera, final CameraFragmentResultListener callback) {
-        File pictureFile = outputPath;
+        final File pictureFile = outputPath;
         if (pictureFile == null) {
             Log.d(TAG, "Error creating media file, check storage permissions.");
             return;
@@ -563,7 +563,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
         }
 
         try {
-            ExifInterface exif = new ExifInterface(pictureFile.getAbsolutePath());
+            final ExifInterface exif = new ExifInterface(pictureFile.getAbsolutePath());
             exif.setAttribute(ExifInterface.TAG_ORIENTATION, "" + getPhotoOrientation(configurationProvider.getSensorPosition()));
             exif.saveAttributes();
 
@@ -582,7 +582,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
 
     @Override
     public CharSequence[] getVideoQualityOptions() {
-        List<CharSequence> videoQualities = new ArrayList<>();
+        final List<CharSequence> videoQualities = new ArrayList<>();
 
         if (configurationProvider.getMinimumVideoDuration() > 0)
             videoQualities.add(new VideoQualityOption(Configuration.MEDIA_QUALITY_AUTO, CameraHelper.getCamcorderProfile(Configuration.MEDIA_QUALITY_AUTO, getCurrentCameraId()), configurationProvider.getMinimumVideoDuration()));
@@ -599,7 +599,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
         videoDuration = CameraHelper.calculateApproximateVideoDuration(camcorderProfile, configurationProvider.getVideoFileSize());
         videoQualities.add(new VideoQualityOption(Configuration.MEDIA_QUALITY_LOW, camcorderProfile, videoDuration));
 
-        CharSequence[] array = new CharSequence[videoQualities.size()];
+        final CharSequence[] array = new CharSequence[videoQualities.size()];
         videoQualities.toArray(array);
 
         return array;
@@ -607,13 +607,13 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
 
     @Override
     public CharSequence[] getPhotoQualityOptions() {
-        List<CharSequence> photoQualities = new ArrayList<>();
+        final List<CharSequence> photoQualities = new ArrayList<>();
         photoQualities.add(new PhotoQualityOption(Configuration.MEDIA_QUALITY_HIGHEST, getPhotoSizeForQuality(Configuration.MEDIA_QUALITY_HIGHEST)));
         photoQualities.add(new PhotoQualityOption(Configuration.MEDIA_QUALITY_HIGH, getPhotoSizeForQuality(Configuration.MEDIA_QUALITY_HIGH)));
         photoQualities.add(new PhotoQualityOption(Configuration.MEDIA_QUALITY_MEDIUM, getPhotoSizeForQuality(Configuration.MEDIA_QUALITY_MEDIUM)));
         photoQualities.add(new PhotoQualityOption(Configuration.MEDIA_QUALITY_LOWEST, getPhotoSizeForQuality(Configuration.MEDIA_QUALITY_LOWEST)));
 
-        CharSequence[] array = new CharSequence[photoQualities.size()];
+        final CharSequence[] array = new CharSequence[photoQualities.size()];
         photoQualities.toArray(array);
 
         return array;

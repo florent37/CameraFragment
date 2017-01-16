@@ -37,6 +37,7 @@ public class FlashSwitchView extends ImageButton {
 
     private void init() {
         setBackgroundColor(Color.TRANSPARENT);
+        displayFlashAuto();
     }
 
     public void displayFlashOff() {

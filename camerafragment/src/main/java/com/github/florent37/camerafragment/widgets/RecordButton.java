@@ -68,6 +68,8 @@ public class RecordButton extends ImageButton {
         });
         setSoundEffectsEnabled(false);
         setIconPadding(iconPadding);
+
+        displayPhotoState();
     }
 
     //public void setup(@Configuration.MediaAction int mediaAction) {

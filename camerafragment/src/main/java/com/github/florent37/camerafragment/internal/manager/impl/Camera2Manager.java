@@ -122,8 +122,7 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
             });
         }
     };
-    private CameraCaptureSession.CaptureCallback captureCallback
-            = new CameraCaptureSession.CaptureCallback() {
+    private CameraCaptureSession.CaptureCallback captureCallback = new CameraCaptureSession.CaptureCallback() {
 
         @Override
         public void onCaptureProgressed(@NonNull CameraCaptureSession session,
@@ -148,19 +147,19 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
 
         this.manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
 
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = windowManager.getDefaultDisplay();
-        Point size = new Point();
+        final WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        final Display display = windowManager.getDefaultDisplay();
+        final Point size = new Point();
         display.getSize(size);
         windowSize = new Size(size.x, size.y);
 
         try {
-            String[] ids = manager.getCameraIdList();
+            final String[] ids = manager.getCameraIdList();
             numberOfCameras = ids.length;
             for (String id : ids) {
-                CameraCharacteristics characteristics = manager.getCameraCharacteristics(id);
+                final CameraCharacteristics characteristics = manager.getCameraCharacteristics(id);
 
-                int orientation = characteristics.get(CameraCharacteristics.LENS_FACING);
+                final int orientation = characteristics.get(CameraCharacteristics.LENS_FACING);
                 if (orientation == CameraCharacteristics.LENS_FACING_FRONT) {
                     faceFrontCameraId = id;
                     faceFrontCameraOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
@@ -253,7 +252,7 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
 
     @Override
     public Size getPhotoSizeForQuality(@Configuration.MediaQuality int mediaQuality) {
-        StreamConfigurationMap map = currentCameraId.equals(faceBackCameraId) ? backCameraStreamConfigurationMap : frontCameraStreamConfigurationMap;
+        final StreamConfigurationMap map = currentCameraId.equals(faceBackCameraId) ? backCameraStreamConfigurationMap : frontCameraStreamConfigurationMap;
         return CameraHelper.getPictureSize(Size.fromArray2(map.getOutputSizes(ImageFormat.JPEG)), mediaQuality);
     }
 
@@ -271,14 +270,14 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
                     closePreviewSession();
                     if (prepareVideoRecorder()) {
 
-                        SurfaceTexture texture = Camera2Manager.this.texture;
+                        final SurfaceTexture texture = Camera2Manager.this.texture;
                         texture.setDefaultBufferSize(videoSize.getWidth(), videoSize.getHeight());
 
                         try {
                             previewRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
-                            List<Surface> surfaces = new ArrayList<>();
+                            final List<Surface> surfaces = new ArrayList<>();
 
-                            Surface previewSurface = workingSurface;
+                            final Surface previewSurface = workingSurface;
                             surfaces.add(previewSurface);
                             previewRequestBuilder.addTarget(previewSurface);
 
@@ -406,7 +405,7 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
 
     @Override
     protected int getVideoOrientation(@Configuration.SensorPosition int sensorPosition) {
-        int degrees = 0;
+        final int degrees;
         switch (sensorPosition) {
             case Configuration.SENSOR_POSITION_UP:
                 degrees = 0;
@@ -421,10 +420,12 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
                 degrees = 270;
                 break;// Landscape right
             case Configuration.SENSOR_POSITION_UNSPECIFIED:
+            default:
+                degrees = 0;
                 break;
         }
 
-        int rotate;
+        final int rotate;
         if (Objects.equals(currentCameraId, faceFrontCameraId)) {
             rotate = (360 + faceFrontCameraOrientation + degrees) % 360;
         } else {
@@ -465,14 +466,14 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
     @Override
     protected void prepareCameraOutputs() {
         try {
-            CameraCharacteristics characteristics = currentCameraId.equals(faceBackCameraId) ? backCameraCharacteristics : frontCameraCharacteristics;
+            final CameraCharacteristics characteristics = currentCameraId.equals(faceBackCameraId) ? backCameraCharacteristics : frontCameraCharacteristics;
 
             if (currentCameraId.equals(faceFrontCameraId) && frontCameraStreamConfigurationMap == null)
                 frontCameraStreamConfigurationMap = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             else if (currentCameraId.equals(faceBackCameraId) && backCameraStreamConfigurationMap == null)
                 backCameraStreamConfigurationMap = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
 
-            StreamConfigurationMap map = currentCameraId.equals(faceBackCameraId) ? backCameraStreamConfigurationMap : frontCameraStreamConfigurationMap;
+            final StreamConfigurationMap map = currentCameraId.equals(faceBackCameraId) ? backCameraStreamConfigurationMap : frontCameraStreamConfigurationMap;
             if (configurationProvider.getMediaQuality() == Configuration.MEDIA_QUALITY_AUTO) {
                 camcorderProfile = CameraHelper.getCamcorderProfile(currentCameraId, configurationProvider.getVideoFileSize(), configurationProvider.getMinimumVideoDuration());
             } else
@@ -607,7 +608,7 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
                 break;
             }
             case STATE_WAITING_LOCK: {
-                Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
+                final Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
                 if (afState == null) {
                     captureStillPicture();
                 } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState
@@ -626,7 +627,7 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
                 break;
             }
             case STATE_WAITING_PRE_CAPTURE: {
-                Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
+                final Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                 if (aeState == null ||
                         aeState == CaptureResult.CONTROL_AE_STATE_PRECAPTURE ||
                         aeState == CaptureRequest.CONTROL_AE_STATE_FLASH_REQUIRED) {
@@ -635,7 +636,7 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
                 break;
             }
             case STATE_WAITING_NON_PRE_CAPTURE: {
-                Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
+                final Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                 if (aeState == null || aeState != CaptureResult.CONTROL_AE_STATE_PRECAPTURE) {
                     previewState = STATE_PICTURE_TAKEN;
                     captureStillPicture();
@@ -732,7 +733,7 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
 
     @Override
     public void onImageAvailable(ImageReader imageReader) {
-        File outputFile = outputPath;
+        final File outputFile = outputPath;
         backgroundHandler.post(new ImageSaver(imageReader.acquireNextImage(), outputFile, new ImageSaver.ImageSaverCallback() {
             @Override
             public void onSuccessFinish(final byte[] bytes) {
@@ -783,7 +784,7 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
 
     @Override
     public CharSequence[] getVideoQualityOptions() {
-        List<CharSequence> videoQualities = new ArrayList<>();
+        final List<CharSequence> videoQualities = new ArrayList<>();
 
         if (configurationProvider.getMinimumVideoDuration() > 0)
             videoQualities.add(new VideoQualityOption(Configuration.MEDIA_QUALITY_AUTO, CameraHelper.getCamcorderProfile(Configuration.MEDIA_QUALITY_AUTO, getCurrentCameraId()), configurationProvider.getMinimumVideoDuration()));
@@ -809,13 +810,13 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
 
     @Override
     public CharSequence[] getPhotoQualityOptions() {
-        List<CharSequence> photoQualities = new ArrayList<>();
+        final List<CharSequence> photoQualities = new ArrayList<>();
         photoQualities.add(new PhotoQualityOption(Configuration.MEDIA_QUALITY_HIGHEST, getPhotoSizeForQuality(Configuration.MEDIA_QUALITY_HIGHEST)));
         photoQualities.add(new PhotoQualityOption(Configuration.MEDIA_QUALITY_HIGH, getPhotoSizeForQuality(Configuration.MEDIA_QUALITY_HIGH)));
         photoQualities.add(new PhotoQualityOption(Configuration.MEDIA_QUALITY_MEDIUM, getPhotoSizeForQuality(Configuration.MEDIA_QUALITY_MEDIUM)));
         photoQualities.add(new PhotoQualityOption(Configuration.MEDIA_QUALITY_LOWEST, getPhotoSizeForQuality(Configuration.MEDIA_QUALITY_LOWEST)));
 
-        CharSequence[] array = new CharSequence[photoQualities.size()];
+        final CharSequence[] array = new CharSequence[photoQualities.size()];
         photoQualities.toArray(array);
 
         return array;

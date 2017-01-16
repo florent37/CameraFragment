@@ -116,3 +116,11 @@ cameraFragment.setStateListener(new CameraFragmentStateListener() {
 ## Text
 
 CameraFragment can ping you with the current record duration with `CameraFragmentTextListener`
+
+# Widgets
+
+CameraFragment comes with some default views
+
+`RecordButton`, `MediaActionSwitchView`, `FlashSwitchView`, `CameraSwitchView`, `CameraSettingsView`
+
+[![png](https://raw.githubusercontent.com/florent37/CameraFragment/master/media/buttons.png)](https://github.com/florent37/CameraFragment)

@@ -302,11 +302,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-
-        cameraSwitchView.displayBackCamera();
-        flashSwitchView.displayFlashAuto();
-        recordButton.displayPhotoState();
-        mediaActionSwitchView.displayActionWillSwitchVideo();
     }
 
     private CameraFragmentApi getCameraFragment() {

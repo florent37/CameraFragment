@@ -45,17 +45,6 @@ public final class Configuration implements Serializable {
     public static final int FLASH_MODE_OFF = 2;
     public static final int FLASH_MODE_AUTO = 3;
 
-    public interface Arguments {
-        String REQUEST_CODE = "io.memfis19.annca.request_code";
-        String MEDIA_ACTION = "io.memfis19.annca.media_action";
-        String MEDIA_QUALITY = "io.memfis19.annca.camera_media_quality";
-        String VIDEO_DURATION = "io.memfis19.annca.video_duration";
-        String MINIMUM_VIDEO_DURATION = "io.memfis19.annca.minimum.video_duration";
-        String VIDEO_FILE_SIZE = "io.memfis19.annca.camera_video_file_size";
-        String FLASH_MODE = "io.memfis19.annca.camera_flash_mode";
-        String FILE_PATH = "io.memfis19.annca.camera_video_file_path";
-    }
-
     @IntDef({MEDIA_QUALITY_AUTO, MEDIA_QUALITY_LOWEST, MEDIA_QUALITY_LOW, MEDIA_QUALITY_MEDIUM, MEDIA_QUALITY_HIGH, MEDIA_QUALITY_HIGHEST})
     @Retention(RetentionPolicy.SOURCE)
     public @interface MediaQuality {

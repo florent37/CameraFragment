@@ -67,6 +67,8 @@ public class MediaActionSwitchView extends ImageButton {
 
         padding = Utils.convertDipToPixels(context, padding);
         setPadding(padding, padding, padding, padding);
+
+        displayActionWillSwitchVideo();
     }
 
     public void displayActionWillSwitchPhoto(){

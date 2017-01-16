@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
+        tools:visibility="gone"
         android:text="Add camera" />
 
     <RelativeLayout
@@ -40,9 +41,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
-                android:background="@drawable/circle_frame_background_dark"
-                android:scaleType="center"
-                android:src="@drawable/ic_settings_white_24dp" />
+                />
 
             <com.github.florent37.camerafragment.widgets.FlashSwitchView
                 android:id="@+id/flash_switch_view"
@@ -66,8 +65,10 @@
             android:id="@+id/record_panel"
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:background="@android:color/transparent"
             android:layout_alignParentBottom="true"
-            android:background="@android:color/transparent">
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
             <com.github.florent37.camerafragment.widgets.RecordButton
                 android:id="@+id/record_button"
@@ -76,16 +77,6 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp" />
-
-            <com.github.florent37.camerafragment.widgets.MediaActionSwitchView
-                android:id="@+id/photo_video_camera_switcher"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="40dp"
-                android:checked="false"
-                android:gravity="center" />
 
             <TextView
                 android:id="@+id/record_duration_text"
@@ -106,6 +97,18 @@
                 android:textColor="@android:color/white"
                 android:textSize="14dp"
                 android:visibility="invisible" />
+
+            <com.github.florent37.camerafragment.widgets.MediaActionSwitchView
+                android:id="@+id/photo_video_camera_switcher"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:checked="false"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/record_size_mb_text"
+                android:layout_toEndOf="@+id/record_size_mb_text"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp" />
 
         </RelativeLayout>
 

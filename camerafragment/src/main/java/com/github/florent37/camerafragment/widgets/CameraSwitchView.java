@@ -50,6 +50,8 @@ public class CameraSwitchView extends AppCompatImageButton {
 
         padding = Utils.convertDipToPixels(context, padding);
         setPadding(padding, padding, padding, padding);
+
+        displayBackCamera();
     }
 
     public void displayFrontCamera() {
