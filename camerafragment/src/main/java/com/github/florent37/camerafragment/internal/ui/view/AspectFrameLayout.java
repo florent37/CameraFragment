@@ -9,8 +9,6 @@ import android.widget.FrameLayout;
  */
 public class AspectFrameLayout extends FrameLayout {
 
-    private static final String TAG = "AspectFrameLayout";
-
     private double targetAspectRatio = -1.0;        // initially use default window size
 
     public AspectFrameLayout(Context context) {

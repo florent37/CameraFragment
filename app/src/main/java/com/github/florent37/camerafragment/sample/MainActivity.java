@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
     }
 
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void allowCameraSwitching(boolean allow) {
-                    //cameraSwitchView.setVisibility(allow ? View.VISIBLE : View.GONE);
+                    cameraSwitchView.setVisibility(allow ? View.VISIBLE : View.GONE);
                 }
 
                 @Override
@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void setMediaActionSwitchVisible(boolean visible) {
-                    //mediaActionSwitchView.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+                    mediaActionSwitchView.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
                 }
             });
 
@@ -299,8 +299,6 @@ public class MainActivity extends AppCompatActivity {
                     recordDurationText.setVisibility(visible ? View.VISIBLE : View.GONE);
                 }
             });
-
-
         }
     }
 

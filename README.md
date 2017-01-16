@@ -1,6 +1,6 @@
 # CameraFragment
 
-[![gif](https://raw.githubusercontent.com/florent37/CameraFragment/master/media/cameraFragment.gif)](https://github.com/florent37/CameraFragment)
+[![png](https://raw.githubusercontent.com/florent37/CameraFragment/master/media/sample.gif)](https://github.com/florent37/CameraFragment)
 
 ```java
 //you can configure the fragment by the configuration builder

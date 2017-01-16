@@ -21,7 +21,7 @@
             android:theme="@style/ThemeFullscreen" />
 
         <activity
-            android:name="com.github.florent37.camerafragment.sample.MainActivity"
+            android:name="com.github.florent37.camerafragment.sample.MainActivityCustoms"
             android:screenOrientation="portrait"
             android:theme="@style/ThemeFullscreen" >
             <intent-filter>
