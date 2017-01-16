@@ -7,6 +7,7 @@ import android.media.CamcorderProfile;
 import android.media.ExifInterface;
 import android.media.MediaRecorder;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -29,20 +30,18 @@ import com.github.florent37.camerafragment.internal.ui.model.PhotoQualityOption;
 import com.github.florent37.camerafragment.internal.ui.model.VideoQualityOption;
 import com.github.florent37.camerafragment.internal.utils.CameraHelper;
 import com.github.florent37.camerafragment.internal.utils.Size;
+import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
 
 /**
  * Created by memfis on 8/14/16.
  */
 @SuppressWarnings("deprecation")
-public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Callback>
-        implements SurfaceHolder.Callback, Camera.PictureCallback {
+public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Callback> {
 
     private static final String TAG = "Camera1Manager";
 
     private Camera camera;
     private Surface surface;
-
-    private static Camera1Manager currentInstance;
 
     private int orientation;
     private int displayRotation = 0;
@@ -50,15 +49,6 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
     private File outputPath;
     private CameraVideoListener videoListener;
     private CameraPhotoListener photoListener;
-
-    private Camera1Manager() {
-
-    }
-
-    public static Camera1Manager getInstance() {
-        if (currentInstance == null) currentInstance = new Camera1Manager();
-        return currentInstance;
-    }
 
     @Override
     public void openCamera(final Integer cameraId,
@@ -74,7 +64,44 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
                         uiHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                cameraOpenListener.onCameraOpened(cameraId, previewSize, currentInstance);
+                                cameraOpenListener.onCameraOpened(cameraId, previewSize, new SurfaceHolder.Callback() {
+                                    @Override
+                                    public void surfaceCreated(SurfaceHolder surfaceHolder) {
+                                        if (surfaceHolder.getSurface() == null) {
+                                            return;
+                                        }
+
+                                        surface = surfaceHolder.getSurface();
+
+                                        try {
+                                            camera.stopPreview();
+                                        } catch (Exception ignore) {
+                                        }
+
+                                        startPreview(surfaceHolder);
+                                    }
+
+                                    @Override
+                                    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
+                                        if (surfaceHolder.getSurface() == null) {
+                                            return;
+                                        }
+
+                                        surface = surfaceHolder.getSurface();
+
+                                        try {
+                                            camera.stopPreview();
+                                        } catch (Exception ignore) {
+                                        }
+
+                                        startPreview(surfaceHolder);
+                                    }
+
+                                    @Override
+                                    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+
+                                    }
+                                });
                             }
                         });
                     }
@@ -120,14 +147,19 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
     }
 
     @Override
-    public void takePhoto(File photoFile, CameraPhotoListener cameraPhotoListener) {
+    public void takePhoto(File photoFile, CameraPhotoListener cameraPhotoListener, final CameraFragmentResultListener callback) {
         this.outputPath = photoFile;
         this.photoListener = cameraPhotoListener;
         backgroundHandler.post(new Runnable() {
             @Override
             public void run() {
                 setCameraPhotoQuality(camera);
-                camera.takePicture(null, null, currentInstance);
+                camera.takePicture(null, null, new Camera.PictureCallback() {
+                    @Override
+                    public void onPictureTaken(byte[] bytes, Camera camera) {
+                        Camera1Manager.this.onPictureTaken(bytes, camera, callback);
+                    }
+                });
             }
         });
     }
@@ -158,7 +190,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
     }
 
     @Override
-    public void stopVideoRecord() {
+    public void stopVideoRecord(@Nullable final CameraFragmentResultListener callback) {
         if (isVideoRecording)
             backgroundHandler.post(new Runnable() {
                 @Override
@@ -178,7 +210,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
                         uiHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                videoListener.onVideoRecordStopped(outputPath);
+                                videoListener.onVideoRecordStopped(outputPath, callback);
                             }
                         });
                     }
@@ -306,12 +338,12 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
 
     @Override
     protected void onMaxDurationReached() {
-        stopVideoRecord();
+        stopVideoRecord(null);
     }
 
     @Override
     protected void onMaxFileSizeReached() {
-        stopVideoRecord();
+        stopVideoRecord(null);
     }
 
     @Override
@@ -511,45 +543,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
         return rotate;
     }
 
-    @Override
-    public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        if (surfaceHolder.getSurface() == null) {
-            return;
-        }
-
-        surface = surfaceHolder.getSurface();
-
-        try {
-            camera.stopPreview();
-        } catch (Exception ignore) {
-        }
-
-        startPreview(surfaceHolder);
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
-        if (surfaceHolder.getSurface() == null) {
-            return;
-        }
-
-        surface = surfaceHolder.getSurface();
-
-        try {
-            camera.stopPreview();
-        } catch (Exception ignore) {
-        }
-
-        startPreview(surfaceHolder);
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-
-    }
-
-    @Override
-    public void onPictureTaken(final byte[] bytes, Camera camera) {
+    protected void onPictureTaken(final byte[] bytes, Camera camera, final CameraFragmentResultListener callback) {
         File pictureFile = outputPath;
         if (pictureFile == null) {
             Log.d(TAG, "Error creating media file, check storage permissions.");
@@ -577,7 +571,7 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
                 uiHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        photoListener.onPhotoTaken(bytes, outputPath);
+                        photoListener.onPhotoTaken(bytes, outputPath, callback);
                     }
                 });
             }

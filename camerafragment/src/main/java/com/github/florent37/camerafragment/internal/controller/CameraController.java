@@ -6,6 +6,7 @@ import java.io.File;
 
 import com.github.florent37.camerafragment.configuration.Configuration;
 import com.github.florent37.camerafragment.internal.manager.CameraManager;
+import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
 
 /**
  * Created by memfis on 7/6/16.
@@ -20,11 +21,11 @@ public interface CameraController<CameraId> {
 
     void onDestroy();
 
-    void takePhoto();
+    void takePhoto(CameraFragmentResultListener resultListener);
 
     void startVideoRecord();
 
-    void stopVideoRecord();
+    void stopVideoRecord(CameraFragmentResultListener callback);
 
     boolean isVideoRecording();
 

@@ -19,16 +19,9 @@ import com.github.florent37.camerafragment.R;
  */
 public class FlashSwitchView extends ImageButton {
 
-    @Nullable
-    private FlashModeSwitchListener switchListener;
-
     private Drawable flashOnDrawable;
     private Drawable flashOffDrawable;
     private Drawable flashAutoDrawable;
-
-    public interface FlashModeSwitchListener {
-        void toggleFlashMode();
-    }
 
     public FlashSwitchView(@NonNull Context context) {
         this(context, null);
@@ -44,14 +37,6 @@ public class FlashSwitchView extends ImageButton {
 
     private void init() {
         setBackgroundColor(Color.TRANSPARENT);
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (switchListener != null) {
-                    switchListener.toggleFlashMode();
-                }
-            }
-        });
     }
 
     public void displayFlashOff() {
@@ -64,10 +49,6 @@ public class FlashSwitchView extends ImageButton {
 
     public void displayFlashAuto() {
         setImageDrawable(flashAutoDrawable);
-    }
-
-    public void setFlashSwitchListener(@NonNull FlashModeSwitchListener switchListener) {
-        this.switchListener = switchListener;
     }
 
     @Override

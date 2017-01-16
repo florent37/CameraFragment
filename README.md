@@ -15,7 +15,7 @@ getSupportFragmentManager().beginTransaction()
 
 You can directly take a photo / video with
 ```java
-cameraFragment.takePhotoOrCaptureVideo();
+cameraFragment.takePhotoOrCaptureVideo(callback);
 ```
 
 [![gif](https://raw.githubusercontent.com/florent37/CameraFragment/master/media/take_photo.gif)](https://github.com/florent37/CameraFragment)
@@ -39,7 +39,7 @@ cameraFragment.switchCameraType();
 Camera action ( `PHOTO` / `VIDEO` ) can be modified with
 
 ```java
-cameraFragment.switchAction();
+cameraFragment.switchActionPhotoVideo();
 ```
 
 [![gif](https://raw.githubusercontent.com/florent37/CameraFragment/master/media/switch_action.gif)](https://github.com/florent37/CameraFragment)

@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.TextureView;
 
@@ -22,6 +23,7 @@ import com.github.florent37.camerafragment.internal.manager.listener.CameraVideo
 import com.github.florent37.camerafragment.internal.ui.view.AutoFitTextureView;
 import com.github.florent37.camerafragment.internal.utils.CameraHelper;
 import com.github.florent37.camerafragment.internal.utils.Size;
+import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
 
 /**
  * Created by memfis on 7/6/16.
@@ -49,7 +51,7 @@ public class Camera2Controller implements CameraController<String>,
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        camera2Manager = Camera2Manager.getInstance();
+        camera2Manager = new Camera2Manager();
         camera2Manager.initializeCameraManager(configurationProvider, context);
         setCurrentCameraId(camera2Manager.getFaceBackCameraId());
     }
@@ -71,9 +73,9 @@ public class Camera2Controller implements CameraController<String>,
     }
 
     @Override
-    public void takePhoto() {
+    public void takePhoto(CameraFragmentResultListener callback) {
         outputFile = CameraHelper.getOutputMediaFile(context, Configuration.MEDIA_ACTION_PHOTO);
-        camera2Manager.takePhoto(outputFile, this);
+        camera2Manager.takePhoto(outputFile, this, callback);
     }
 
     @Override
@@ -83,8 +85,8 @@ public class Camera2Controller implements CameraController<String>,
     }
 
     @Override
-    public void stopVideoRecord() {
-        camera2Manager.stopVideoRecord();
+    public void stopVideoRecord(CameraFragmentResultListener callback) {
+        camera2Manager.stopVideoRecord(callback);
     }
 
     @Override
@@ -155,8 +157,8 @@ public class Camera2Controller implements CameraController<String>,
     }
 
     @Override
-    public void onPhotoTaken(byte[] bytes, File photoFile) {
-        cameraView.onPhotoTaken(bytes);
+    public void onPhotoTaken(byte[] bytes, File photoFile, CameraFragmentResultListener callback) {
+        cameraView.onPhotoTaken(bytes, callback);
     }
 
     @Override
@@ -169,8 +171,8 @@ public class Camera2Controller implements CameraController<String>,
     }
 
     @Override
-    public void onVideoRecordStopped(File videoFile) {
-        cameraView.onVideoRecordStop();
+    public void onVideoRecordStopped(File videoFile, @Nullable CameraFragmentResultListener callback) {
+        cameraView.onVideoRecordStop(callback);
     }
 
     @Override

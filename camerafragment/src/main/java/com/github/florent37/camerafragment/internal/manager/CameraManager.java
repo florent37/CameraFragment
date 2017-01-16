@@ -11,6 +11,7 @@ import com.github.florent37.camerafragment.internal.manager.listener.CameraOpenL
 import com.github.florent37.camerafragment.internal.manager.listener.CameraPhotoListener;
 import com.github.florent37.camerafragment.internal.manager.listener.CameraVideoListener;
 import com.github.florent37.camerafragment.internal.utils.Size;
+import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
 
 /**
  * Created by memfis on 8/14/16.
@@ -25,13 +26,13 @@ public interface CameraManager<CameraId, SurfaceListener> {
 
     void setFlashMode(@Configuration.FlashMode int flashMode);
 
-    void takePhoto(File photoFile, CameraPhotoListener cameraPhotoListener);
+    void takePhoto(File photoFile, CameraPhotoListener cameraPhotoListener, CameraFragmentResultListener callback);
 
     void startVideoRecord(File videoFile, CameraVideoListener cameraVideoListener);
 
     Size getPhotoSizeForQuality(@Configuration.MediaQuality int mediaQuality);
 
-    void stopVideoRecord();
+    void stopVideoRecord(CameraFragmentResultListener callback);
 
     void releaseCameraManager();
 

@@ -21,6 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.florent37.camerafragment.CameraFragment;
+import com.github.florent37.camerafragment.CameraFragmentApi;
 import com.github.florent37.camerafragment.configuration.Configuration;
 import com.github.florent37.camerafragment.PreviewActivity;
 import com.github.florent37.camerafragment.listeners.CameraFragmentStateListener;
@@ -57,74 +58,56 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
         ButterKnife.bind(this);
-
-        recordButton.setVisibility(View.GONE);
-        settingsView.setVisibility(View.GONE);
-        flashSwitchView.setVisibility(View.GONE);
-        cameraSwitchView.setVisibility(View.GONE);
-        mediaActionSwitchView.setVisibility(View.GONE);
-
-        setupViewListeners();
     }
 
-    @OnClick(R.id.take_photo)
-    public void takePhotoClicked(){
-        final CameraFragment cameraFragment = getCameraFragment();
+    @OnClick(R.id.flash_switch_view)
+    public void onFlashSwitcClicked(){
+        final CameraFragmentApi cameraFragment = getCameraFragment();
         if (cameraFragment != null) {
-            cameraFragment.takePhotoOrCaptureVideo();
+            cameraFragment.toggleFlashMode();
         }
     }
 
-    private void setupViewListeners() {
-        flashSwitchView.setFlashSwitchListener(new FlashSwitchView.FlashModeSwitchListener() {
-            @Override
-            public void toggleFlashMode() {
-                final CameraFragment cameraFragment = getCameraFragment();
-                if (cameraFragment != null) {
-                    cameraFragment.toggleFlashMode();
-                }
-            }
-        });
+    @OnClick(R.id.front_back_camera_switcher)
+    public void onSwitchCameraClicked(){
+        final CameraFragmentApi cameraFragment = getCameraFragment();
+        if (cameraFragment != null) {
+            cameraFragment.switchCameraType();
+        }
+    }
 
-        cameraSwitchView.setOnCameraTypeChangeListener(new CameraSwitchView.OnCameraTypeChangeListener() {
-            @Override
-            public void switchCameraType() {
-                final CameraFragment cameraFragment = getCameraFragment();
-                if (cameraFragment != null) {
-                    cameraFragment.switchCameraType();
-                }
-            }
-        });
+    @OnClick(R.id.record_button)
+    public void onRecordButtonClicked(){
+        final CameraFragmentApi cameraFragment = getCameraFragment();
+        if (cameraFragment != null) {
+            cameraFragment.takePhotoOrCaptureVideo(new CameraFragmentResultListener() {
+                @Override
+                public void onVideoRecorded(String filePath) {
 
-        recordButton.setRecordButtonListener(new RecordButton.RecordButtonListener() {
-            @Override
-            public void onRecordButtonClicked() {
-                final CameraFragment cameraFragment = getCameraFragment();
-                if (cameraFragment != null) {
-                    cameraFragment.takePhotoOrCaptureVideo();
                 }
-            }
-        });
 
-        mediaActionSwitchView.setOnMediaActionStateChangeListener(new MediaActionSwitchView.OnMediaActionStateChangeListener() {
-            @Override
-            public void switchAction() {
-                final CameraFragment cameraFragment = getCameraFragment();
-                if (cameraFragment != null) {
-                    cameraFragment.switchAction();
-                }
-            }
-        });
+                @Override
+                public void onPhotoTaken(byte[] bytes, String filePath) {
 
-        settingsView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final CameraFragment cameraFragment = getCameraFragment();
-                if (cameraFragment != null) {
-                    cameraFragment.openSettingDialog();
                 }
-            }
-        });
+            });
+        }
+    }
+
+    @OnClick(R.id.settings_view)
+    public void onSettingsClicked(){
+        final CameraFragmentApi cameraFragment = getCameraFragment();
+        if (cameraFragment != null) {
+            cameraFragment.openSettingDialog();
+        }
+    }
+
+    @OnClick(R.id.settings_view)
+    public void onMediaActionSwitchClicked(){
+        final CameraFragmentApi cameraFragment = getCameraFragment();
+        if (cameraFragment != null) {
+            cameraFragment.switchActionPhotoVideo();
+        }
     }
 
     @OnClick(R.id.addCameraButton)
@@ -169,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
 
         if (cameraFragment != null) {
-
             cameraFragment.setResultListener(new CameraFragmentResultListener() {
                 @Override
                 public void onVideoRecorded(String filePath) {
@@ -327,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
         mediaActionSwitchView.displayActionWillSwitchVideo();
     }
 
-    private CameraFragment getCameraFragment() {
-        return (CameraFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+    private CameraFragmentApi getCameraFragment() {
+        return (CameraFragmentApi) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
     }
 }

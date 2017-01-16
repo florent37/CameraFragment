@@ -2,6 +2,7 @@ package com.github.florent37.camerafragment.internal.controller.impl;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -20,6 +21,7 @@ import com.github.florent37.camerafragment.internal.manager.listener.CameraVideo
 import com.github.florent37.camerafragment.internal.ui.view.AutoFitSurfaceView;
 import com.github.florent37.camerafragment.internal.utils.CameraHelper;
 import com.github.florent37.camerafragment.internal.utils.Size;
+import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
 
 /**
  * Created by memfis on 7/7/16.
@@ -48,7 +50,7 @@ public class Camera1Controller implements CameraController<Integer>,
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        cameraManager = Camera1Manager.getInstance();
+        cameraManager = new Camera1Manager();
         cameraManager.initializeCameraManager(configurationProvider, context);
         setCurrentCameraId(cameraManager.getFaceBackCameraId());
     }
@@ -74,9 +76,9 @@ public class Camera1Controller implements CameraController<Integer>,
     }
 
     @Override
-    public void takePhoto() {
+    public void takePhoto(CameraFragmentResultListener callback) {
         outputFile = CameraHelper.getOutputMediaFile(context, Configuration.MEDIA_ACTION_PHOTO);
-        cameraManager.takePhoto(outputFile, this);
+        cameraManager.takePhoto(outputFile, this, callback);
     }
 
     @Override
@@ -86,8 +88,8 @@ public class Camera1Controller implements CameraController<Integer>,
     }
 
     @Override
-    public void stopVideoRecord() {
-        cameraManager.stopVideoRecord();
+    public void stopVideoRecord(CameraFragmentResultListener callback) {
+        cameraManager.stopVideoRecord(callback);
     }
 
     @Override
@@ -154,8 +156,8 @@ public class Camera1Controller implements CameraController<Integer>,
     }
 
     @Override
-    public void onPhotoTaken(byte[] bytes, File photoFile) {
-        cameraView.onPhotoTaken(bytes);
+    public void onPhotoTaken(byte[] bytes, File photoFile, CameraFragmentResultListener callback) {
+        cameraView.onPhotoTaken(bytes, callback);
     }
 
     @Override
@@ -168,8 +170,8 @@ public class Camera1Controller implements CameraController<Integer>,
     }
 
     @Override
-    public void onVideoRecordStopped(File videoFile) {
-        cameraView.onVideoRecordStop();
+    public void onVideoRecordStopped(File videoFile, @Nullable CameraFragmentResultListener callback) {
+        cameraView.onVideoRecordStop(callback);
     }
 
     @Override

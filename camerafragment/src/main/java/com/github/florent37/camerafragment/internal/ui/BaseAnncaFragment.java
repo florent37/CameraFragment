@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.github.florent37.camerafragment.CameraFragmentApi;
 import com.github.florent37.camerafragment.R;
 import com.github.florent37.camerafragment.configuration.Configuration;
 import com.github.florent37.camerafragment.configuration.ConfigurationProvider;
@@ -55,7 +56,7 @@ import java.io.File;
  * Updated by Florent37
  */
 
-public abstract class BaseAnncaFragment<CameraId> extends Fragment {
+public abstract class BaseAnncaFragment<CameraId> extends Fragment implements CameraFragmentApi {
 
     public static final String ARG_CONFIGURATION = "configuration";
     public static final int MIN_VERSION_ICECREAM = Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1;
@@ -191,22 +192,25 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
             }
 
             @Override
-            public void onPhotoTaken(byte[] bytes) {
+            public void onPhotoTaken(byte[] bytes, CameraFragmentResultListener callback) {
                 if (cameraFragmentResultListener != null) {
-                    final String filePath = getCameraController().getOutputFile().toString();
+                    final String filePath = cameraController.getOutputFile().toString();
                     cameraFragmentResultListener.onPhotoTaken(bytes, filePath);
+                    if (callback != null) {
+                        callback.onPhotoTaken(bytes, filePath);
+                    }
                 }
             }
 
             @Override
             public void onVideoRecordStart(int width, int height) {
-                final File outputFile = getCameraController().getOutputFile();
+                final File outputFile = cameraController.getOutputFile();
                 onStartVideoRecord(outputFile);
             }
 
             @Override
-            public void onVideoRecordStop() {
-                BaseAnncaFragment.this.onStopVideoRecord();
+            public void onVideoRecordStop(@Nullable CameraFragmentResultListener callback) {
+                BaseAnncaFragment.this.onStopVideoRecord(callback);
             }
 
             @Override
@@ -252,15 +256,16 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
 
     }
 
-    public void takePhotoOrCaptureVideo() {
+    @Override
+    public void takePhotoOrCaptureVideo(final CameraFragmentResultListener resultListener) {
         switch (currentMediaActionState) {
             case MediaAction.ACTION_PHOTO:
-                takePhoto();
+                takePhoto(resultListener);
                 break;
             case MediaAction.ACTION_VIDEO:
                 switch (currentRecordState) {
                     case Record.RECORD_IN_PROGRESS_STATE:
-                        stopRecording();
+                        stopRecording(resultListener);
                         break;
                     default:
                         startRecording();
@@ -303,11 +308,11 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
         cameraController.onDestroy();
     }
 
-    public void setMaxVideoFileSize(long maxVideoFileSize) {
+    protected void setMaxVideoFileSize(long maxVideoFileSize) {
         this.maxVideoFileSize = maxVideoFileSize;
     }
 
-    public void setMaxVideoDuration(int maxVideoDurationInMillis) {
+    protected void setMaxVideoDuration(int maxVideoDurationInMillis) {
         final TimerTaskBase.Callback callback = new TimerTaskBase.Callback() {
             @Override
             public void setText(String text) {
@@ -331,19 +336,30 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
         }
     }
 
+    @Override
     public void openSettingDialog() {
         final Context context = getContext();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         if (currentMediaActionState == MediaAction.ACTION_VIDEO) {
-            builder.setSingleChoiceItems(videoQualities, getVideoOptionCheckedIndex(), getVideoOptionSelectedListener());
+            builder.setSingleChoiceItems(videoQualities, getVideoOptionCheckedIndex(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int index) {
+                    newQuality = ((VideoQualityOption) videoQualities[index]).getMediaQuality();
+                }
+            });
             if (configurationProvider.getVideoFileSize() > 0)
                 builder.setTitle(String.format(getString(R.string.settings_video_quality_title),
                         "(Max " + String.valueOf(configurationProvider.getVideoFileSize() / (1024 * 1024) + " MB)")));
             else
                 builder.setTitle(String.format(getString(R.string.settings_video_quality_title), ""));
         } else {
-            builder.setSingleChoiceItems(photoQualities, getPhotoOptionCheckedIndex(), getPhotoOptionSelectedListener());
+            builder.setSingleChoiceItems(photoQualities, getPhotoOptionCheckedIndex(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int index) {
+                    newQuality = ((PhotoQualityOption) photoQualities[index]).getMediaQuality();
+                }
+            });
             builder.setTitle(R.string.settings_photo_quality_title);
         }
 
@@ -356,7 +372,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
                     if (cameraFragmentControlsListener != null) {
                         cameraFragmentControlsListener.lockControls();
                     }
-                    getCameraController().switchQuality();
+                    cameraController.switchQuality();
                 }
             }
         });
@@ -375,6 +391,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
         settingsDialog.getWindow().setAttributes(layoutParams);
     }
 
+    @Override
     public void switchCameraType() {
         if (cameraFragmentControlsListener != null) {
             cameraFragmentControlsListener.lockControls();
@@ -399,10 +416,11 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
                 break;
         }
 
-        getCameraController().switchCamera(cameraFace);
+        this.cameraController.switchCamera(cameraFace);
     }
 
-    public void switchAction() {
+    @Override
+    public void switchActionPhotoVideo() {
         switch (currentMediaActionState) {
             case MediaAction.ACTION_PHOTO:
                 currentMediaActionState = MediaAction.ACTION_VIDEO;
@@ -419,6 +437,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
         }
     }
 
+    @Override
     public void toggleFlashMode() {
         switch (currentFlashMode) {
             case Flash.FLASH_AUTO:
@@ -439,17 +458,17 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
             case Flash.FLASH_AUTO:
                 if (cameraFragmentStateListener != null) cameraFragmentStateListener.onFlashAuto();
                 configurationProvider.setFlashMode(Configuration.FLASH_MODE_AUTO);
-                getCameraController().setFlashMode(Configuration.FLASH_MODE_AUTO);
+                this.cameraController.setFlashMode(Configuration.FLASH_MODE_AUTO);
                 break;
             case Flash.FLASH_ON:
                 if (cameraFragmentStateListener != null) cameraFragmentStateListener.onFlashOn();
                 configurationProvider.setFlashMode(Configuration.FLASH_MODE_ON);
-                getCameraController().setFlashMode(Configuration.FLASH_MODE_ON);
+                this.cameraController.setFlashMode(Configuration.FLASH_MODE_ON);
                 break;
             case Flash.FLASH_OFF:
                 if (cameraFragmentStateListener != null) cameraFragmentStateListener.onFlashOff();
                 configurationProvider.setFlashMode(Configuration.FLASH_MODE_OFF);
-                getCameraController().setFlashMode(Configuration.FLASH_MODE_OFF);
+                this.cameraController.setFlashMode(Configuration.FLASH_MODE_OFF);
                 break;
         }
     }
@@ -461,12 +480,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
         rotateSettingsDialog(degrees);
     }
 
-    @Record.RecordState
-    public int getRecordState() {
-        return currentRecordState;
-    }
-
-    public void setRecordState(@Record.RecordState int recordState) {
+    protected void setRecordState(@Record.RecordState int recordState) {
         this.currentRecordState = recordState;
     }
 
@@ -493,12 +507,12 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
     //    }
     //}
 
-    public void setFlashMode(@Flash.FlashMode int mode) {
+    protected void setFlashMode(@Flash.FlashMode int mode) {
         this.currentFlashMode = mode;
         onFlashModeChanged();
     }
 
-    private void rotateSettingsDialog(int degrees) {
+    protected void rotateSettingsDialog(int degrees) {
         if (settingsDialog != null && settingsDialog.isShowing() && Build.VERSION.SDK_INT > 10) {
             ViewGroup dialogView = (ViewGroup) settingsDialog.getWindow().getDecorView();
             for (int i = 0; i < dialogView.getChildCount(); i++) {
@@ -535,73 +549,51 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
         return checkedIndex;
     }
 
-    protected DialogInterface.OnClickListener getVideoOptionSelectedListener() {
-        return new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int index) {
-                newQuality = ((VideoQualityOption) videoQualities[index]).getMediaQuality();
-            }
-        };
-    }
-
-    protected DialogInterface.OnClickListener getPhotoOptionSelectedListener() {
-        return new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int index) {
-                newQuality = ((PhotoQualityOption) photoQualities[index]).getMediaQuality();
-            }
-        };
-    }
-
-    public void takePhoto() {
+    protected void takePhoto(CameraFragmentResultListener callback) {
         if (Build.VERSION.SDK_INT > MIN_VERSION_ICECREAM) {
             new MediaActionSound().play(MediaActionSound.SHUTTER_CLICK);
         }
         setRecordState(Record.TAKE_PHOTO_STATE);
-        getCameraController().takePhoto();
+        this.cameraController.takePhoto(callback);
         if (cameraFragmentStateListener != null) {
             cameraFragmentStateListener.onRecordStatePhoto();
         }
     }
 
-    public void startRecording() {
+    protected void startRecording() {
         if (Build.VERSION.SDK_INT > MIN_VERSION_ICECREAM) {
             new MediaActionSound().play(MediaActionSound.START_VIDEO_RECORDING);
         }
 
         setRecordState(Record.RECORD_IN_PROGRESS_STATE);
-        getCameraController().startVideoRecord();
+        this.cameraController.startVideoRecord();
 
         if (cameraFragmentStateListener != null) {
             cameraFragmentStateListener.onRecordStateVideoInProgress();
         }
     }
 
-    public void stopRecording() {
+    protected void stopRecording(CameraFragmentResultListener callback) {
         if (Build.VERSION.SDK_INT > MIN_VERSION_ICECREAM) {
             new MediaActionSound().play(MediaActionSound.STOP_VIDEO_RECORDING);
         }
 
         setRecordState(Record.READY_FOR_RECORD_STATE);
-        getCameraController().stopVideoRecord();
+        this.cameraController.stopVideoRecord(callback);
 
-        this.onStopVideoRecord();
+        this.onStopVideoRecord(callback);
 
         if (cameraFragmentStateListener != null) {
             cameraFragmentStateListener.onRecordStateVideoReadyForRecord();
         }
     }
 
-    public CameraController<CameraId> getCameraController() {
-        return cameraController;
-    }
-
-    public void clearCameraPreview() {
+    protected void clearCameraPreview() {
         if (previewContainer != null)
             previewContainer.removeAllViews();
     }
 
-    public void setCameraPreview(View preview, Size previewSize) {
+    protected void setCameraPreview(View preview, Size previewSize) {
         //onCameraControllerReady()
         videoQualities = cameraController.getVideoQualityOptions();
         photoQualities = cameraController.getPhotoQualityOptions();
@@ -613,11 +605,11 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
         previewContainer.setAspectRatio(previewSize.getHeight() / (double) previewSize.getWidth());
     }
 
-    public void setMediaFilePath(final File mediaFile) {
+    protected void setMediaFilePath(final File mediaFile) {
         this.mediaFilePath = mediaFile.toString();
     }
 
-    public void onStartVideoRecord(final File mediaFile) {
+    protected void onStartVideoRecord(final File mediaFile) {
         setMediaFilePath(mediaFile);
         if (maxVideoFileSize > 0) {
 
@@ -657,7 +649,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
         }
     }
 
-    public void onStopVideoRecord() {
+    protected void onStopVideoRecord(@Nullable CameraFragmentResultListener callback) {
         if (cameraFragmentControlsListener != null) {
             cameraFragmentControlsListener.allowRecord(false);
         }
@@ -679,24 +671,32 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment {
             }
         }
 
+        final String filePath = this.cameraController.getOutputFile().toString();
         if (cameraFragmentResultListener != null) {
-            final String filePath = getCameraController().getOutputFile().toString();
             cameraFragmentResultListener.onVideoRecorded(filePath);
+        }
+
+        if (callback != null) {
+            callback.onVideoRecorded(filePath);
         }
     }
 
+    @Override
     public void setStateListener(CameraFragmentStateListener cameraFragmentStateListener) {
         this.cameraFragmentStateListener = cameraFragmentStateListener;
     }
 
+    @Override
     public void setTextListener(CameraFragmentVideoRecordTextListener cameraFragmentVideoRecordTextListener) {
         this.cameraFragmentVideoRecordTextListener = cameraFragmentVideoRecordTextListener;
     }
 
+    @Override
     public void setControlsListener(CameraFragmentControlsListener cameraFragmentControlsListener) {
         this.cameraFragmentControlsListener = cameraFragmentControlsListener;
     }
 
+    @Override
     public void setResultListener(CameraFragmentResultListener cameraFragmentResultListener) {
         this.cameraFragmentResultListener = cameraFragmentResultListener;
     }

@@ -18,13 +18,6 @@ import com.github.florent37.camerafragment.internal.utils.Utils;
  */
 public class CameraSwitchView extends AppCompatImageButton {
 
-    @Nullable
-    private OnCameraTypeChangeListener onCameraTypeChangeListener;
-
-    public interface OnCameraTypeChangeListener {
-        void switchCameraType();
-    }
-
     private Drawable frontCameraDrawable;
     private Drawable rearCameraDrawable;
     private int padding = 5;
@@ -53,14 +46,6 @@ public class CameraSwitchView extends AppCompatImageButton {
         DrawableCompat.setTintList(rearCameraDrawable.mutate(), ContextCompat.getColorStateList(context, R.drawable.switch_camera_mode_selector));
 
         setBackgroundResource(R.drawable.circle_frame_background_dark);
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (onCameraTypeChangeListener != null) {
-                    onCameraTypeChangeListener.switchCameraType();
-                }
-            }
-        });
         displayBackCamera();
 
         padding = Utils.convertDipToPixels(context, padding);
@@ -85,9 +70,5 @@ public class CameraSwitchView extends AppCompatImageButton {
                 setAlpha(0.5f);
             }
         }
-    }
-
-    public void setOnCameraTypeChangeListener(OnCameraTypeChangeListener listener) {
-        this.onCameraTypeChangeListener = listener;
     }
 }
