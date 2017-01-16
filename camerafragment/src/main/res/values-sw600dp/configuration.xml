@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="isTablet">true</bool>
+    <integer name="frontFaceCameraRotationShift">0</integer>
+    <integer name="rearCameraRotationShift">0</integer>
+</resources>

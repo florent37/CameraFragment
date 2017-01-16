@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/preview_activity_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <com.github.florent37.camerafragment.internal.ui.view.AspectFrameLayout
+        android:id="@+id/previewAspectFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
+
+        <SurfaceView
+            android:id="@+id/video_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.github.florent37.camerafragment.internal.ui.view.AspectFrameLayout>
+
+    <FrameLayout
+        android:id="@+id/photo_preview_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+
+    <LinearLayout
+        android:id="@+id/preview_control_panel"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="#82212121"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/cancel_media_action"
+            style="@style/PreviewButtonsStyle"
+            android:drawableTop="@drawable/ic_clear_white_24dp"
+            android:text="@string/preview_controls_cancel" />
+
+        <TextView
+            android:id="@+id/crop_image"
+            style="@style/PreviewButtonsStyle"
+            android:drawableTop="@drawable/ic_crop_white_24dp"
+            android:text="@string/preview_controls_crop" />
+
+        <TextView
+            android:id="@+id/ratio_image"
+            style="@style/PreviewButtonsStyle"
+            android:drawableTop="@drawable/ic_image_aspect_ratio_white_24dp" />
+
+        <TextView
+            android:id="@+id/re_take_media"
+            style="@style/PreviewButtonsStyle"
+            android:drawableTop="@drawable/ic_replay_white_24dp"
+            android:text="@string/preview_controls_retake" />
+
+        <TextView
+            android:id="@+id/confirm_media_result"
+            style="@style/PreviewButtonsStyle"
+            android:drawableTop="@drawable/ic_done_white_24dp"
+            android:text="@string/preview_controls_confirm" />
+
+    </LinearLayout>
+
+</RelativeLayout>

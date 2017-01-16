@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cancel_label">Annuller</string>
+    <string name="ok_label">Ok</string>
+
+    <string name="settings_video_quality_title">Video størrelse %s</string>
+    <string name="settings_photo_quality_title">Billed størrelse</string>
+
+    <!-- Preview Activity -->
+    <string name="preview_controls_confirm">Færdig</string>
+    <string name="preview_controls_retake">Gentag</string>
+    <string name="preview_controls_cancel">Fortryd</string>
+    <string name="preview_controls_crop">Beskær</string>
+    <string name="preview_controls_original_ratio_label">Original</string>
+
+</resources>
