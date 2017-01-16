@@ -5,7 +5,7 @@ import com.github.florent37.camerafragment.listeners.CameraFragmentResultListene
 import com.github.florent37.camerafragment.listeners.CameraFragmentStateListener;
 import com.github.florent37.camerafragment.listeners.CameraFragmentVideoRecordTextListener;
 
-/**
+/*
  * Created by florentchampigny on 16/01/2017.
  */
 

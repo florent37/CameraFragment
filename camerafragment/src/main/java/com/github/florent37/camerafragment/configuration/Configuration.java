@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
+/*
  * Created by memfis on 7/6/16.
  * Updated by Florent37
  */
@@ -116,7 +116,7 @@ public final class Configuration implements Serializable {
             return this;
         }
 
-        /***
+        /**
          * @param videoDurationInMilliseconds - video duration in milliseconds
          * @return
          */
@@ -125,7 +125,7 @@ public final class Configuration implements Serializable {
             return this;
         }
 
-        /***
+        /**
          * @param minimumVideoDurationInMilliseconds - minimum video duration in milliseconds, used only in video mode
          *                                           for auto quality.
          * @return
@@ -135,7 +135,7 @@ public final class Configuration implements Serializable {
             return this;
         }
 
-        /***
+        /**
          * @param videoSizeInBytes - file size in bytes
          * @return
          */

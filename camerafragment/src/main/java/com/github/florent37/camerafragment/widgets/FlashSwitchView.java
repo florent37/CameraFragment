@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import com.github.florent37.camerafragment.R;
 
 
-/**
+/*
  * Created by memfis on 7/6/16.
  */
 public class FlashSwitchView extends ImageButton {

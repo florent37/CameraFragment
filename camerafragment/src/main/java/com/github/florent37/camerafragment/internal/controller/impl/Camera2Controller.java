@@ -25,7 +25,7 @@ import com.github.florent37.camerafragment.internal.utils.CameraHelper;
 import com.github.florent37.camerafragment.internal.utils.Size;
 import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
 
-/**
+/*
  * Created by memfis on 7/6/16.
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)

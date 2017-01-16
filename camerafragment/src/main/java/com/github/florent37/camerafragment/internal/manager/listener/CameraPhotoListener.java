@@ -4,7 +4,7 @@ import com.github.florent37.camerafragment.listeners.CameraFragmentResultListene
 
 import java.io.File;
 
-/**
+/*
  * Created by memfis on 8/14/16.
  */
 public interface CameraPhotoListener {

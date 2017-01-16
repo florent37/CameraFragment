@@ -32,7 +32,7 @@ import com.github.florent37.camerafragment.internal.utils.CameraHelper;
 import com.github.florent37.camerafragment.internal.utils.Size;
 import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
 
-/**
+/*
  * Created by memfis on 8/14/16.
  */
 @SuppressWarnings("deprecation")

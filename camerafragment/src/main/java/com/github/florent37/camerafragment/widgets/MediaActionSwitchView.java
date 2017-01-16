@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 import com.github.florent37.camerafragment.R;
 import com.github.florent37.camerafragment.internal.utils.Utils;
 
-/**
+/*
  * Created by memfis on 6/24/16.
  */
 public class MediaActionSwitchView extends ImageButton {

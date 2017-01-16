@@ -1,6 +1,6 @@
 package com.github.florent37.camerafragment.configuration;
 
-/**
+/*
  * Created by florentchampigny on 12/01/2017.
  */
 

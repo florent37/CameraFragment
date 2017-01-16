@@ -3,7 +3,7 @@ package com.github.florent37.camerafragment.internal.timer;
 import android.os.Handler;
 import android.os.Looper;
 
-/**
+/*
  * Created by florentchampigny on 13/01/2017.
  */
 

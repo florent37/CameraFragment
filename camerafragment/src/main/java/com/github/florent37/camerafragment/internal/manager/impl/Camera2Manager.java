@@ -50,7 +50,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-/**
+/*
  * Created by memfis on 8/9/16.
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)

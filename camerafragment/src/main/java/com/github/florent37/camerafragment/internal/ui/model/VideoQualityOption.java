@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.github.florent37.camerafragment.configuration.Configuration;
 
-/**
+/*
  * Created by memfis on 12/1/16.
  */
 

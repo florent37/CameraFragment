@@ -1,32 +1,54 @@
 apply plugin: 'com.android.library'
 
-
-ext {
-    PUBLISH_VERSION = '0.3.2'
-    PUBLISH_VERSION_CODE = 6
-    SUPPORT_VERSION = '25.1.0'
-    TARGET_SDK = 24
-    MIN_SDK = 10
-    BUILD_TOOLS = "24.0.3"
-}
-
 android {
-    compileSdkVersion TARGET_SDK
-    buildToolsVersion BUILD_TOOLS
+    compileSdkVersion project.sdk
+    buildToolsVersion project.buildTools
 
     defaultConfig {
-        minSdkVersion MIN_SDK
-        targetSdkVersion TARGET_SDK
-        versionCode PUBLISH_VERSION_CODE
-        versionName PUBLISH_VERSION
+        minSdkVersion project.minSdk
+        targetSdkVersion project.sdk
+
+        versionCode 1
+        versionName "1.0"
     }
 }
 
 dependencies {
-    compile "com.android.support:support-v4:$SUPPORT_VERSION"
-    compile "com.android.support:appcompat-v7:$SUPPORT_VERSION"
+    compile "com.android.support:support-v4:"+ project.supportVersion
+    compile "com.android.support:appcompat-v7:"+ project.supportVersion
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.4'
+}
+
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'CameraFragment'
+    orgName = 'florent37'
+
+    publishedGroupId = 'com.github.florent37'
+    libraryName = 'CameraFragment'
+    artifact = 'camerafragment'
+
+    libraryDescription = 'CameraFragment'
+
+    siteUrl = 'https://github.com/florent37/CameraFragment'
+    gitUrl = 'https://github.com/florent37/CameraFragment.git'
+
+    libraryVersion = rootProject.ext.libraryVersion
+
+    developerId = 'florent37'
+    developerName = 'Florent Champigny'
+    developerEmail = 'champigny.florent@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+if (project.rootProject.file('local.properties').exists()) {
+    apply from: rootProject.file('gradle/install-v1.gradle')
+    apply from: rootProject.file('gradle/bintray-android-v1.gradle')
 }

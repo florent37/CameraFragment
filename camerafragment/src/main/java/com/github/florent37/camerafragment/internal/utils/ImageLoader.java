@@ -18,7 +18,7 @@ import android.widget.ImageView;
 
 import java.io.IOException;
 
-/**
+/*
  * Created by memfis on 7/18/16.
  */
 public final class ImageLoader {

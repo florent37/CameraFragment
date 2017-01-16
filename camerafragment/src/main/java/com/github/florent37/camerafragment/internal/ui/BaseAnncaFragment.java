@@ -51,7 +51,7 @@ import com.github.florent37.camerafragment.listeners.CameraFragmentVideoRecordTe
 
 import java.io.File;
 
-/**
+/*
  * Created by memfis on 12/1/16.
  * Updated by Florent37
  */

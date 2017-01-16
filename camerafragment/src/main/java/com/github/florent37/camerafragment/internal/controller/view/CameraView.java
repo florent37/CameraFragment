@@ -7,7 +7,7 @@ import com.github.florent37.camerafragment.configuration.Configuration;
 import com.github.florent37.camerafragment.internal.utils.Size;
 import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
 
-/**
+/*
  * Created by memfis on 7/6/16.
  */
 public interface CameraView {

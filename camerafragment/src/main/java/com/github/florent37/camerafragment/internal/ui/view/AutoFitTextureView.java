@@ -6,7 +6,7 @@ import android.content.Context;
 import android.os.Build;
 import android.view.TextureView;
 
-/**
+/*
  * Created by memfis on 7/6/16.
  */
 @SuppressLint("ViewConstructor")
@@ -23,7 +23,7 @@ public class AutoFitTextureView extends TextureView {
         setSurfaceTextureListener(surfaceTextureListener);
     }
 
-    /**
+    /*
      * Sets the aspect ratio for this view. The size of the view will be measured based on the ratio
      * calculated fromList the parameters. Note that the actual sizes of parameters don't matter, that
      * is, calling setAspectRatio(2, 3) and setAspectRatio(4, 6) make the same result.

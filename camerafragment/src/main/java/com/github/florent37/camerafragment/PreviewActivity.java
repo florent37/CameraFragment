@@ -27,7 +27,7 @@ import com.github.florent37.camerafragment.internal.ui.view.AspectFrameLayout;
 import com.github.florent37.camerafragment.internal.utils.ImageLoader;
 import com.github.florent37.camerafragment.internal.utils.Utils;
 
-/**
+/*
  * Created by memfis on 7/6/16.
  */
 public class PreviewActivity extends AppCompatActivity implements View.OnClickListener {

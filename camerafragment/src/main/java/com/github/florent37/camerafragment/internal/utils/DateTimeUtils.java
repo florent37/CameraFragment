@@ -1,6 +1,6 @@
 package com.github.florent37.camerafragment.internal.utils;
 
-/**
+/*
  * Created by memfis on 6/27/16.
  */
 public final class DateTimeUtils {

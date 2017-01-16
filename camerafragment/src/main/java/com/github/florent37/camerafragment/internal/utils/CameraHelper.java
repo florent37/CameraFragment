@@ -22,7 +22,7 @@ import java.util.List;
 
 import com.github.florent37.camerafragment.configuration.Configuration;
 
-/**
+/*
  * Created by memfis on 7/6/16.
  * <p/>
  * Class with some common methods to work with camera.

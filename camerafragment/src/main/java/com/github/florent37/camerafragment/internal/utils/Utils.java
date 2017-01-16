@@ -9,7 +9,7 @@ import android.view.Surface;
 import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 
-/**
+/*
  * Created by memfis on 7/18/16.
  */
 public class Utils {

@@ -1,6 +1,6 @@
 package com.github.florent37.camerafragment.configuration;
 
-/**
+/*
  * Created by memfis on 7/6/16.
  */
 public interface ConfigurationProvider {

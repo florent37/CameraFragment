@@ -10,7 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-/**
+/*
  * Created by memfis on 7/6/16.
  */
 public class ImageSaver implements Runnable {

@@ -131,6 +131,13 @@ CameraFragment comes with some default views
 
 [![png](https://raw.githubusercontent.com/florent37/CameraFragment/master/media/buttons.png)](https://github.com/florent37/CameraFragment)
 
+#Download
+
+In your module [![Download](https://api.bintray.com/packages/florent37/maven/CameraFragment/images/download.svg)](https://bintray.com/florent37/maven/CameraFragment/_latestVersion)
+```groovy
+compile 'com.github.florent37:camerafragment:1.0.0'
+```
+
 #Community
 
 Forked from [https://github.com/memfis19/Annca](https://github.com/memfis19/Annca)

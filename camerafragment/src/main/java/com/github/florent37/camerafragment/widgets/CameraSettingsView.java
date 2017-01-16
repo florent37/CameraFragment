@@ -8,7 +8,7 @@ import android.widget.ImageButton;
 
 import com.github.florent37.camerafragment.R;
 
-/**
+/*
  * Created by memfis on 8/23/16.
  */
 public class CameraSettingsView extends ImageButton {

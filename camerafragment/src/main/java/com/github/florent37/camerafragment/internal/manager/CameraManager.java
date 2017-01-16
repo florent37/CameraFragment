@@ -13,7 +13,7 @@ import com.github.florent37.camerafragment.internal.manager.listener.CameraVideo
 import com.github.florent37.camerafragment.internal.utils.Size;
 import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
 
-/**
+/*
  * Created by memfis on 8/14/16.
  */
 public interface CameraManager<CameraId, SurfaceListener> {

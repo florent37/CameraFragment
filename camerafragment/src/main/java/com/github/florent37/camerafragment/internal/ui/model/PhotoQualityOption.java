@@ -3,7 +3,7 @@ package com.github.florent37.camerafragment.internal.ui.model;
 import com.github.florent37.camerafragment.configuration.Configuration;
 import com.github.florent37.camerafragment.internal.utils.Size;
 
-/**
+/*
  * Created by memfis on 12/1/16.
  */
 
