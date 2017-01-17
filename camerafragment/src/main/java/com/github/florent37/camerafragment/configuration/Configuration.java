@@ -149,6 +149,11 @@ public final class Configuration implements Serializable {
             return this;
         }
 
+        public Builder setCamera(@CameraFace int camera){
+            configuration.cameraFace = camera;
+            return this;
+        }
+
         public Configuration build() throws IllegalArgumentException {
             if (configuration.mediaQuality == MEDIA_QUALITY_AUTO && configuration.minimumVideoDuration < 0) {
                 throw new IllegalStateException("Please provide minimum video duration in milliseconds to use auto quality.");
@@ -159,6 +164,7 @@ public final class Configuration implements Serializable {
 
     }
 
+    @MediaAction
     public int getMediaAction() {
         return mediaAction;
     }
@@ -167,6 +173,7 @@ public final class Configuration implements Serializable {
         return mediaQuality;
     }
 
+    @CameraFace
     public int getCameraFace() {
         return cameraFace;
     }
@@ -183,6 +190,7 @@ public final class Configuration implements Serializable {
         return minimumVideoDuration;
     }
 
+    @FlashMode
     public int getFlashMode() {
         return flashMode;
     }

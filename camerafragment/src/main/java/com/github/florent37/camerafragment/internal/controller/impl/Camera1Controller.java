@@ -99,8 +99,14 @@ public class Camera1Controller implements CameraController<Integer>,
 
     @Override
     public void switchCamera(@Configuration.CameraFace final int cameraFace) {
-        setCurrentCameraId(cameraManager.getCurrentCameraId().equals(cameraManager.getFaceFrontCameraId()) ?
-                cameraManager.getFaceBackCameraId() : cameraManager.getFaceFrontCameraId());
+        final Integer backCameraId = cameraManager.getFaceBackCameraId();
+        final Integer frontCameraId = cameraManager.getFaceFrontCameraId();
+
+        if(cameraManager.getCurrentCameraId().equals(frontCameraId)){
+            setCurrentCameraId(backCameraId);
+        } else {
+            setCurrentCameraId(frontCameraId);
+        }
 
         cameraManager.closeCamera(this);
     }

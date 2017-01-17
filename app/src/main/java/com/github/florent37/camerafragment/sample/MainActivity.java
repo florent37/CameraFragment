@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     public void onSwitchCameraClicked(){
         final CameraFragmentApi cameraFragment = getCameraFragment();
         if (cameraFragment != null) {
-            cameraFragment.switchCameraType();
+            cameraFragment.switchCameraTypeFrontBack();
         }
     }
 

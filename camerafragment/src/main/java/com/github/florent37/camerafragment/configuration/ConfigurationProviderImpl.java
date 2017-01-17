@@ -22,6 +22,9 @@ public class ConfigurationProviderImpl implements ConfigurationProvider {
     @Configuration.FlashMode
     protected int flashMode = Configuration.FLASH_MODE_AUTO;
 
+    @Configuration.CameraFace
+    protected int cameraFace = Configuration.CAMERA_FACE_REAR;
+
     @Configuration.SensorPosition
     protected int sensorPosition = Configuration.SENSOR_POSITION_UNSPECIFIED;
 
@@ -100,12 +103,21 @@ public class ConfigurationProviderImpl implements ConfigurationProvider {
         this.flashMode = flashMode;
     }
 
-    public void setMediaAction(int mediaAction) {
+    public void setMediaAction(@Configuration.MediaAction int mediaAction) {
         this.mediaAction = mediaAction;
     }
 
     public int getPassedMediaQuality() {
         return passedMediaQuality;
+    }
+
+    @Configuration.CameraFace
+    public int getCameraFace() {
+        return cameraFace;
+    }
+
+    public void setCameraFace(@Configuration.CameraFace int cameraFace) {
+        this.cameraFace = cameraFace;
     }
 
     @Override
@@ -158,6 +170,11 @@ public class ConfigurationProviderImpl implements ConfigurationProvider {
             final int videoDuration = configuration.getVideoDuration();
             if (videoDuration != -1) {
                 setVideoDuration(videoDuration);
+            }
+
+            final int cameraFace = configuration.getCameraFace();
+            if (cameraFace != -1) {
+                setCameraFace(cameraFace);
             }
 
             final long videoFileSize = configuration.getVideoFileSize();

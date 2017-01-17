@@ -74,16 +74,28 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     private AlertDialog settingsDialog;
     private CameraFragmentControlsListener cameraFragmentControlsListener;
     private CameraFragmentVideoRecordTextListener cameraFragmentVideoRecordTextListener;
+    final TimerTaskBase.Callback timerCallBack = new TimerTaskBase.Callback() {
+        @Override
+        public void setText(String text) {
+            if (cameraFragmentVideoRecordTextListener != null) {
+                cameraFragmentVideoRecordTextListener.setRecordDurationText(text);
+            }
+        }
+
+        @Override
+        public void setTextVisible(boolean visible) {
+            if (cameraFragmentVideoRecordTextListener != null) {
+                cameraFragmentVideoRecordTextListener.setRecordDurationTextVisible(visible);
+            }
+        }
+    };
     private CameraFragmentStateListener cameraFragmentStateListener;
     @Flash.FlashMode
     private int currentFlashMode = Flash.FLASH_AUTO;
-
     @Camera.CameraType
     private int currentCameraType = Camera.CAMERA_TYPE_REAR;
-
     @MediaAction.MediaActionState
     private int currentMediaActionState = MediaAction.ACTION_PHOTO;
-
     @Record.RecordState
     private int currentRecordState = Record.TAKE_PHOTO_STATE;
     private String mediaFilePath;
@@ -157,15 +169,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
         this.configurationProvider = new ConfigurationProviderImpl();
         this.configurationProvider.setupWithAnnaConfiguration(configuration);
 
-        //onProcessBundle
-        currentMediaActionState = configurationProvider.getMediaAction() == Configuration.MEDIA_ACTION_VIDEO ?
-                MediaAction.ACTION_VIDEO : MediaAction.ACTION_PHOTO;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        previewContainer = (AspectFrameLayout) view.findViewById(R.id.previewContainer);
+        this.sensorManager = (SensorManager) getContext().getSystemService(Activity.SENSOR_SERVICE);
 
         final CameraView cameraView = new CameraView() {
 
@@ -210,7 +214,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
 
             @Override
             public void onVideoRecordStop(@Nullable CameraFragmentResultListener callback) {
-                BaseAnncaFragment.this.onStopVideoRecord(callback);
+                //BaseAnncaFragment.this.onStopVideoRecord(callback);
             }
 
             @Override
@@ -220,13 +224,22 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
         };
 
         if (CameraHelper.hasCamera2(getContext())) {
-            cameraController = new Camera2Controller(getActivity(), cameraView, configurationProvider);
+            cameraController = new Camera2Controller(getContext(), cameraView, configurationProvider);
         } else {
-            cameraController = new Camera1Controller(getActivity(), cameraView, configurationProvider);
+            cameraController = new Camera1Controller(getContext(), cameraView, configurationProvider);
         }
         cameraController.onCreate(savedInstanceState);
 
-        sensorManager = (SensorManager) getContext().getSystemService(Activity.SENSOR_SERVICE);
+        //onProcessBundle
+        currentMediaActionState = configurationProvider.getMediaAction() == Configuration.MEDIA_ACTION_VIDEO ?
+                MediaAction.ACTION_VIDEO : MediaAction.ACTION_PHOTO;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        previewContainer = (AspectFrameLayout) view.findViewById(R.id.previewContainer);
+
         final int defaultOrientation = Utils.getDeviceDefaultOrientation(getContext());
         switch (defaultOrientation) {
             case android.content.res.Configuration.ORIENTATION_LANDSCAPE:
@@ -254,6 +267,16 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
             setMaxVideoFileSize(configurationProvider.getVideoFileSize());
         }
 
+        setCameraTypeFrontBack(configurationProvider.getCameraFace());
+
+        notifyListeners();
+
+    }
+
+    public void notifyListeners() {
+        onFlashModeChanged();
+        onActionPhotoVideoChanged();
+        onCameraTypeFrontBackChanged();
     }
 
     @Override
@@ -313,26 +336,10 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     }
 
     protected void setMaxVideoDuration(int maxVideoDurationInMillis) {
-        final TimerTaskBase.Callback callback = new TimerTaskBase.Callback() {
-            @Override
-            public void setText(String text) {
-                if (cameraFragmentVideoRecordTextListener != null) {
-                    cameraFragmentVideoRecordTextListener.setRecordDurationText(text);
-                }
-            }
-
-            @Override
-            public void setTextVisible(boolean visible) {
-                if (cameraFragmentVideoRecordTextListener != null) {
-                    cameraFragmentVideoRecordTextListener.setRecordDurationTextVisible(visible);
-                }
-            }
-        };
-
         if (maxVideoDurationInMillis > 0) {
-            this.countDownTimer = new CountdownTask(callback, maxVideoDurationInMillis);
+            this.countDownTimer = new CountdownTask(timerCallBack, maxVideoDurationInMillis);
         } else {
-            this.countDownTimer = new TimerTask(callback);
+            this.countDownTimer = new TimerTask(timerCallBack);
         }
     }
 
@@ -392,7 +399,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     }
 
     @Override
-    public void switchCameraType() {
+    public void switchCameraTypeFrontBack() {
         if (cameraFragmentControlsListener != null) {
             cameraFragmentControlsListener.lockControls();
             cameraFragmentControlsListener.allowRecord(false);
@@ -403,20 +410,44 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
             case Camera.CAMERA_TYPE_FRONT:
                 currentCameraType = Camera.CAMERA_TYPE_REAR;
                 cameraFace = Configuration.CAMERA_FACE_REAR;
-                if (cameraFragmentStateListener != null) {
-                    cameraFragmentStateListener.onCurrentCameraBack();
-                }
                 break;
             case Camera.CAMERA_TYPE_REAR:
                 currentCameraType = Camera.CAMERA_TYPE_FRONT;
                 cameraFace = Configuration.CAMERA_FACE_FRONT;
-                if (cameraFragmentStateListener != null) {
-                    cameraFragmentStateListener.onCurrentCameraFront();
-                }
                 break;
         }
 
+        onCameraTypeFrontBackChanged();
         this.cameraController.switchCamera(cameraFace);
+    }
+
+    protected void setCameraTypeFrontBack(@Configuration.CameraFace int cameraFace){
+        switch (cameraFace) {
+            case Configuration.CAMERA_FACE_FRONT:
+                currentCameraType = Camera.CAMERA_TYPE_FRONT;
+                cameraFace = Configuration.CAMERA_FACE_FRONT;
+                break;
+            case Configuration.CAMERA_FACE_REAR:
+                currentCameraType = Camera.CAMERA_TYPE_REAR;
+                cameraFace = Configuration.CAMERA_FACE_REAR;
+                break;
+        }
+        onCameraTypeFrontBackChanged();
+        this.cameraController.switchCamera(cameraFace);
+
+    }
+
+    protected void onCameraTypeFrontBackChanged() {
+        if (cameraFragmentStateListener != null) {
+            switch (currentCameraType) {
+                case Camera.CAMERA_TYPE_REAR:
+                    cameraFragmentStateListener.onCurrentCameraBack();
+                    break;
+                case Camera.CAMERA_TYPE_FRONT:
+                    cameraFragmentStateListener.onCurrentCameraFront();
+                    break;
+            }
+        }
     }
 
     @Override
@@ -424,16 +455,24 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
         switch (currentMediaActionState) {
             case MediaAction.ACTION_PHOTO:
                 currentMediaActionState = MediaAction.ACTION_VIDEO;
-                if (cameraFragmentStateListener != null) {
-                    cameraFragmentStateListener.onCameraSetupForVideo();
-                }
                 break;
             case MediaAction.ACTION_VIDEO:
                 currentMediaActionState = MediaAction.ACTION_PHOTO;
-                if (cameraFragmentStateListener != null) {
-                    cameraFragmentStateListener.onCameraSetupForPhoto();
-                }
                 break;
+        }
+        onActionPhotoVideoChanged();
+    }
+
+    protected void onActionPhotoVideoChanged() {
+        if (cameraFragmentStateListener != null) {
+            switch (currentMediaActionState) {
+                case MediaAction.ACTION_VIDEO:
+                    cameraFragmentStateListener.onCameraSetupForVideo();
+                    break;
+                case MediaAction.ACTION_PHOTO:
+                    cameraFragmentStateListener.onCameraSetupForPhoto();
+                    break;
+            }
         }
     }
 
@@ -483,6 +522,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     protected void setRecordState(@Record.RecordState int recordState) {
         this.currentRecordState = recordState;
     }
+
 
     //@Override
     //public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -642,6 +682,10 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
                 Log.e("FileObserver", "setMediaFilePath: ", e);
             }
         }
+
+        if (countDownTimer == null) {
+            this.countDownTimer = new TimerTask(timerCallBack);
+        }
         countDownTimer.start();
 
         if (cameraFragmentStateListener != null) {
@@ -660,7 +704,10 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
 
         if (fileObserver != null)
             fileObserver.stopWatching();
-        countDownTimer.stop();
+
+        if(countDownTimer != null) {
+            countDownTimer.stop();
+        }
 
         final int mediaAction = configurationProvider.getMediaAction();
         if (cameraFragmentControlsListener != null) {

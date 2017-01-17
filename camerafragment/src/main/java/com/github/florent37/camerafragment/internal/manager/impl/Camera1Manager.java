@@ -13,13 +13,6 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.florent37.camerafragment.configuration.Configuration;
 import com.github.florent37.camerafragment.configuration.ConfigurationProvider;
 import com.github.florent37.camerafragment.internal.manager.listener.CameraCloseListener;
@@ -31,6 +24,13 @@ import com.github.florent37.camerafragment.internal.ui.model.VideoQualityOption;
 import com.github.florent37.camerafragment.internal.utils.CameraHelper;
 import com.github.florent37.camerafragment.internal.utils.Size;
 import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Created by memfis on 8/14/16.
@@ -50,6 +50,8 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
     private CameraVideoListener videoListener;
     private CameraPhotoListener photoListener;
 
+    private Integer futurFlashMode;
+
     @Override
     public void openCamera(final Integer cameraId,
                            final CameraOpenListener<Integer, SurfaceHolder.Callback> cameraOpenListener) {
@@ -60,6 +62,10 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
                 try {
                     camera = Camera.open(cameraId);
                     prepareCameraOutputs();
+                    if(futurFlashMode != null) {
+                        setFlashMode(futurFlashMode);
+                        futurFlashMode = null;
+                    }
                     if (cameraOpenListener != null) {
                         uiHandler.post(new Runnable() {
                             @Override
@@ -142,8 +148,12 @@ public class Camera1Manager extends BaseCameraManager<Integer, SurfaceHolder.Cal
     }
 
     @Override
-    public void setFlashMode(@Configuration.FlashMode int flashMode) {
-        setFlashMode(camera, camera.getParameters(), flashMode);
+    public void setFlashMode(@Configuration.FlashMode final int flashMode) {
+        if (camera != null) {
+            setFlashMode(camera, camera.getParameters(), flashMode);
+        } else {
+            futurFlashMode = flashMode;
+        }
     }
 
     @Override

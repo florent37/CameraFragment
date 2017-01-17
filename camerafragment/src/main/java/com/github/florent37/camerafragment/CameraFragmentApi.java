@@ -15,7 +15,7 @@ public interface CameraFragmentApi {
 
     void openSettingDialog();
 
-    void switchCameraType();
+    void switchCameraTypeFrontBack();
 
     void switchActionPhotoVideo();
 

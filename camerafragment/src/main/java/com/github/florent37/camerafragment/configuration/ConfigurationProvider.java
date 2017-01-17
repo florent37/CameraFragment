@@ -25,6 +25,9 @@ public interface ConfigurationProvider {
     @Configuration.FlashMode
     int getFlashMode();
 
+    @Configuration.CameraFace
+    int getCameraFace();
+
     void setMediaQuality(int mediaQuality);
 
     void setPassedMediaQuality(int mediaQuality);

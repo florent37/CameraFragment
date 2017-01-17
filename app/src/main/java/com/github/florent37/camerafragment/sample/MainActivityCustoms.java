@@ -12,21 +12,13 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.github.florent37.camerafragment.CameraFragment;
 import com.github.florent37.camerafragment.CameraFragmentApi;
 import com.github.florent37.camerafragment.PreviewActivity;
 import com.github.florent37.camerafragment.configuration.Configuration;
-import com.github.florent37.camerafragment.listeners.CameraFragmentControlsListener;
 import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
 import com.github.florent37.camerafragment.listeners.CameraFragmentStateListener;
-import com.github.florent37.camerafragment.listeners.CameraFragmentVideoRecordTextListener;
-import com.github.florent37.camerafragment.widgets.CameraSettingsView;
-import com.github.florent37.camerafragment.widgets.CameraSwitchView;
-import com.github.florent37.camerafragment.widgets.FlashSwitchView;
-import com.github.florent37.camerafragment.widgets.MediaActionSwitchView;
-import com.github.florent37.camerafragment.widgets.RecordButton;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -59,6 +51,113 @@ public class MainActivityCustoms extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    @RequiresPermission(Manifest.permission.CAMERA)
+    public void addCamera() {
+        addCameraButton.setVisibility(View.GONE);
+        cameraLayout.setVisibility(View.VISIBLE);
+
+        final Configuration.Builder builder = new Configuration.Builder();
+        builder
+                .setCamera(Configuration.CAMERA_FACE_FRONT)
+                .setFlashMode(Configuration.FLASH_MODE_ON)
+                .setMediaAction(Configuration.MEDIA_ACTION_VIDEO);
+
+        final CameraFragment cameraFragment = CameraFragment.newInstance(builder.build());
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content, cameraFragment, FRAGMENT_TAG)
+                .commit();
+
+        if (cameraFragment != null) {
+            cameraFragment.setResultListener(new CameraFragmentResultListener() {
+                @Override
+                public void onVideoRecorded(String filePath) {
+                    Intent intent = PreviewActivity.newIntentVideo(MainActivityCustoms.this, filePath);
+                    startActivityForResult(intent, REQUEST_PREVIEW_CODE);
+                }
+
+                @Override
+                public void onPhotoTaken(byte[] bytes, String filePath) {
+                    Intent intent = PreviewActivity.newIntentPhoto(MainActivityCustoms.this, filePath);
+                    startActivityForResult(intent, REQUEST_PREVIEW_CODE);
+                }
+            });
+
+            cameraFragment.setStateListener(new CameraFragmentStateListener() {
+
+                @Override
+                public void onCurrentCameraBack() {
+                    cameraSwitchView.setText("back");
+                }
+
+                @Override
+                public void onCurrentCameraFront() {
+                    cameraSwitchView.setText("front");
+                }
+
+                @Override
+                public void onFlashAuto() {
+                    flashSwitchView.setText("auto");
+                }
+
+                @Override
+                public void onFlashOn() {
+                    flashSwitchView.setText("on");
+                }
+
+                @Override
+                public void onFlashOff() {
+                    flashSwitchView.setText("off");
+                }
+
+                @Override
+                public void onCameraSetupForPhoto() {
+                    mediaActionSwitchView.setText("photo");
+                    recordButton.setText("take photo");
+                    flashSwitchView.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onCameraSetupForVideo() {
+                    mediaActionSwitchView.setText("video");
+                    recordButton.setText("capture video");
+                    flashSwitchView.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void shouldRotateControls(int degrees) {
+                    ViewCompat.setRotation(cameraSwitchView, degrees);
+                    ViewCompat.setRotation(mediaActionSwitchView, degrees);
+                    ViewCompat.setRotation(flashSwitchView, degrees);
+                }
+
+                @Override
+                public void onRecordStateVideoReadyForRecord() {
+                    recordButton.setText("take video");
+                }
+
+                @Override
+                public void onRecordStateVideoInProgress() {
+                    recordButton.setText("stop");
+                }
+
+                @Override
+                public void onRecordStatePhoto() {
+                    recordButton.setText("take photo");
+                }
+
+                @Override
+                public void onStopVideoRecord() {
+                    settingsView.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onStartVideoRecord(File outputFile) {
+                }
+            });
+
+        }
+    }
+
     @OnClick(R.id.flash_switch_view)
     public void onFlashSwitcClicked(){
         final CameraFragmentApi cameraFragment = getCameraFragment();
@@ -71,7 +170,7 @@ public class MainActivityCustoms extends AppCompatActivity {
     public void onSwitchCameraClicked(){
         final CameraFragmentApi cameraFragment = getCameraFragment();
         if (cameraFragment != null) {
-            cameraFragment.switchCameraType();
+            cameraFragment.switchCameraTypeFrontBack();
         }
     }
 
@@ -137,105 +236,6 @@ public class MainActivityCustoms extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length != 0) {
             addCamera();
-        }
-    }
-
-    @RequiresPermission(Manifest.permission.CAMERA)
-    public void addCamera() {
-        addCameraButton.setVisibility(View.GONE);
-        cameraLayout.setVisibility(View.VISIBLE);
-
-        final CameraFragment cameraFragment = CameraFragment.newInstance(new Configuration.Builder().build());
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content, cameraFragment, FRAGMENT_TAG)
-                .commit();
-
-        if (cameraFragment != null) {
-            cameraFragment.setResultListener(new CameraFragmentResultListener() {
-                @Override
-                public void onVideoRecorded(String filePath) {
-                    Intent intent = PreviewActivity.newIntentVideo(MainActivityCustoms.this, filePath);
-                    startActivityForResult(intent, REQUEST_PREVIEW_CODE);
-                }
-
-                @Override
-                public void onPhotoTaken(byte[] bytes, String filePath) {
-                    Intent intent = PreviewActivity.newIntentPhoto(MainActivityCustoms.this, filePath);
-                    startActivityForResult(intent, REQUEST_PREVIEW_CODE);
-                }
-            });
-
-            cameraFragment.setStateListener(new CameraFragmentStateListener() {
-
-                @Override
-                public void onCurrentCameraBack() {
-                    cameraSwitchView.setText("back");
-                }
-
-                @Override
-                public void onCurrentCameraFront() {
-                    cameraSwitchView.setText("front");
-                }
-
-                @Override
-                public void onFlashAuto() {
-                    flashSwitchView.setText("auto");
-                }
-
-                @Override
-                public void onFlashOn() {
-                    flashSwitchView.setText("on");
-                }
-
-                @Override
-                public void onFlashOff() {
-                    flashSwitchView.setText("off");
-                }
-
-                @Override
-                public void onCameraSetupForPhoto() {
-                    mediaActionSwitchView.setText("photo");
-                    flashSwitchView.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onCameraSetupForVideo() {
-                    mediaActionSwitchView.setText("video");
-                    flashSwitchView.setVisibility(View.GONE);
-                }
-
-                @Override
-                public void shouldRotateControls(int degrees) {
-                    ViewCompat.setRotation(cameraSwitchView, degrees);
-                    ViewCompat.setRotation(mediaActionSwitchView, degrees);
-                    ViewCompat.setRotation(flashSwitchView, degrees);
-                }
-
-                @Override
-                public void onRecordStateVideoReadyForRecord() {
-                    recordButton.setText("take video");
-                }
-
-                @Override
-                public void onRecordStateVideoInProgress() {
-                    recordButton.setText("stop");
-                }
-
-                @Override
-                public void onRecordStatePhoto() {
-                    recordButton.setText("take photo");
-                }
-
-                @Override
-                public void onStopVideoRecord() {
-                    settingsView.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onStartVideoRecord(File outputFile) {
-                }
-            });
-
         }
     }
 
