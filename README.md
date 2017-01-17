@@ -37,7 +37,7 @@ cameraFragment.toggleFlashMode();
 Camera Type can be modified ( `BACK` / `FRONT` ) with
 
 ```java
-cameraFragment.switchCameraType();
+cameraFragment.switchCameraTypeFrontBack();
 ```
 
 [![gif](https://raw.githubusercontent.com/florent37/CameraFragment/master/media/switch_camera.gif)](https://github.com/florent37/CameraFragment)
