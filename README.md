@@ -22,6 +22,7 @@ getSupportFragmentManager().beginTransaction()
 You can directly take a photo / video with
 ```java
 cameraFragment.takePhotoOrCaptureVideo(callback);
+cameraFragment.takePhotoOrCaptureVideo(callback, directoryPath, fileName);
 ```
 
 [![gif](https://raw.githubusercontent.com/florent37/CameraFragment/master/media/take_photo.gif)](https://github.com/florent37/CameraFragment)
@@ -135,7 +136,7 @@ CameraFragment comes with some default views
 
 In your module [![Download](https://api.bintray.com/packages/florent37/maven/CameraFragment/images/download.svg)](https://bintray.com/florent37/maven/CameraFragment/_latestVersion)
 ```groovy
-compile 'com.github.florent37:camerafragment:1.0.1'
+compile 'com.github.florent37:camerafragment:1.0.2'
 ```
 
 #Community
