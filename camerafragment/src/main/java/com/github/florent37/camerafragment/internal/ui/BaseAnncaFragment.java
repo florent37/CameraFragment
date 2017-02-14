@@ -197,12 +197,12 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
 
             @Override
             public void onPhotoTaken(byte[] bytes, CameraFragmentResultListener callback) {
+                final String filePath = cameraController.getOutputFile().toString();
                 if (cameraFragmentResultListener != null) {
-                    final String filePath = cameraController.getOutputFile().toString();
                     cameraFragmentResultListener.onPhotoTaken(bytes, filePath);
-                    if (callback != null) {
-                        callback.onPhotoTaken(bytes, filePath);
-                    }
+                }
+                if (callback != null) {
+                    callback.onPhotoTaken(bytes, filePath);
                 }
             }
 
@@ -421,7 +421,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
         this.cameraController.switchCamera(cameraFace);
     }
 
-    protected void setCameraTypeFrontBack(@Configuration.CameraFace int cameraFace){
+    protected void setCameraTypeFrontBack(@Configuration.CameraFace int cameraFace) {
         switch (cameraFace) {
             case Configuration.CAMERA_FACE_FRONT:
                 currentCameraType = Camera.CAMERA_TYPE_FRONT;
@@ -705,7 +705,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
         if (fileObserver != null)
             fileObserver.stopWatching();
 
-        if(countDownTimer != null) {
+        if (countDownTimer != null) {
             countDownTimer.stop();
         }
 

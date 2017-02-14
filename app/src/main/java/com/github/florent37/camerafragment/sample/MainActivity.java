@@ -1,7 +1,6 @@
 package com.github.florent37.camerafragment.sample;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +11,20 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.github.florent37.camerafragment.CameraFragment;
+import com.github.florent37.camerafragment.CameraFragmentApi;
+import com.github.florent37.camerafragment.configuration.Configuration;
+import com.github.florent37.camerafragment.listeners.CameraFragmentControlsListener;
+import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
+import com.github.florent37.camerafragment.listeners.CameraFragmentStateListener;
+import com.github.florent37.camerafragment.listeners.CameraFragmentVideoRecordTextListener;
+import com.github.florent37.camerafragment.widgets.CameraSettingsView;
+import com.github.florent37.camerafragment.widgets.CameraSwitchView;
+import com.github.florent37.camerafragment.widgets.FlashSwitchView;
+import com.github.florent37.camerafragment.widgets.MediaActionSwitchView;
+import com.github.florent37.camerafragment.widgets.RecordButton;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,38 +33,32 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.github.florent37.camerafragment.CameraFragment;
-import com.github.florent37.camerafragment.CameraFragmentApi;
-import com.github.florent37.camerafragment.configuration.Configuration;
-import com.github.florent37.camerafragment.PreviewActivity;
-import com.github.florent37.camerafragment.listeners.CameraFragmentStateListener;
-import com.github.florent37.camerafragment.listeners.CameraFragmentControlsListener;
-import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
-import com.github.florent37.camerafragment.listeners.CameraFragmentVideoRecordTextListener;
-import com.github.florent37.camerafragment.widgets.CameraSettingsView;
-import com.github.florent37.camerafragment.widgets.CameraSwitchView;
-import com.github.florent37.camerafragment.widgets.FlashSwitchView;
-import com.github.florent37.camerafragment.widgets.MediaActionSwitchView;
-import com.github.florent37.camerafragment.widgets.RecordButton;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String FRAGMENT_TAG = "camera";
     private static final int REQUEST_CAMERA_PERMISSIONS = 931;
     private static final int REQUEST_PREVIEW_CODE = 1001;
+    @Bind(R.id.settings_view)
+    CameraSettingsView settingsView;
+    @Bind(R.id.flash_switch_view)
+    FlashSwitchView flashSwitchView;
+    @Bind(R.id.front_back_camera_switcher)
+    CameraSwitchView cameraSwitchView;
+    @Bind(R.id.record_button)
+    RecordButton recordButton;
+    @Bind(R.id.photo_video_camera_switcher)
+    MediaActionSwitchView mediaActionSwitchView;
 
-    public static final String FRAGMENT_TAG = "camera";
+    @Bind(R.id.record_duration_text)
+    TextView recordDurationText;
+    @Bind(R.id.record_size_mb_text)
+    TextView recordSizeText;
 
-    @Bind(R.id.settings_view) CameraSettingsView settingsView;
-    @Bind(R.id.flash_switch_view) FlashSwitchView flashSwitchView;
-    @Bind(R.id.front_back_camera_switcher) CameraSwitchView cameraSwitchView;
-    @Bind(R.id.record_button) RecordButton recordButton;
-    @Bind(R.id.photo_video_camera_switcher) MediaActionSwitchView mediaActionSwitchView;
-
-    @Bind(R.id.record_duration_text) TextView recordDurationText;
-    @Bind(R.id.record_size_mb_text) TextView recordSizeText;
-
-    @Bind(R.id.cameraLayout) View cameraLayout;
-    @Bind(R.id.addCameraButton) View addCameraButton;
+    @Bind(R.id.cameraLayout)
+    View cameraLayout;
+    @Bind(R.id.addCameraButton)
+    View addCameraButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.flash_switch_view)
-    public void onFlashSwitcClicked(){
+    public void onFlashSwitcClicked() {
         final CameraFragmentApi cameraFragment = getCameraFragment();
         if (cameraFragment != null) {
             cameraFragment.toggleFlashMode();
@@ -69,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.front_back_camera_switcher)
-    public void onSwitchCameraClicked(){
+    public void onSwitchCameraClicked() {
         final CameraFragmentApi cameraFragment = getCameraFragment();
         if (cameraFragment != null) {
             cameraFragment.switchCameraTypeFrontBack();
@@ -77,25 +84,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.record_button)
-    public void onRecordButtonClicked(){
+    public void onRecordButtonClicked() {
         final CameraFragmentApi cameraFragment = getCameraFragment();
         if (cameraFragment != null) {
             cameraFragment.takePhotoOrCaptureVideo(new CameraFragmentResultListener() {
                 @Override
                 public void onVideoRecorded(String filePath) {
-
+                    Toast.makeText(getBaseContext(), "onVideoRecorded " + filePath, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onPhotoTaken(byte[] bytes, String filePath) {
-
+                    Toast.makeText(getBaseContext(), "onPhotoTaken " + filePath, Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
 
     @OnClick(R.id.settings_view)
-    public void onSettingsClicked(){
+    public void onSettingsClicked() {
         final CameraFragmentApi cameraFragment = getCameraFragment();
         if (cameraFragment != null) {
             cameraFragment.openSettingDialog();
@@ -103,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.photo_video_camera_switcher)
-    public void onMediaActionSwitchClicked(){
+    public void onMediaActionSwitchClicked() {
         final CameraFragmentApi cameraFragment = getCameraFragment();
         if (cameraFragment != null) {
             cameraFragment.switchActionPhotoVideo();
@@ -111,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.addCameraButton)
-    public void onAddCameraClicked(){
+    public void onAddCameraClicked() {
         if (Build.VERSION.SDK_INT > 15) {
             final String[] permissions = {
                     Manifest.permission.CAMERA,
@@ -153,19 +160,19 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
 
         if (cameraFragment != null) {
-            cameraFragment.setResultListener(new CameraFragmentResultListener() {
-                @Override
-                public void onVideoRecorded(String filePath) {
-                    Intent intent = PreviewActivity.newIntentVideo(MainActivity.this, filePath);
-                    startActivityForResult(intent, REQUEST_PREVIEW_CODE);
-                }
-
-                @Override
-                public void onPhotoTaken(byte[] bytes, String filePath) {
-                    Intent intent = PreviewActivity.newIntentPhoto(MainActivity.this, filePath);
-                    startActivityForResult(intent, REQUEST_PREVIEW_CODE);
-                }
-            });
+            //cameraFragment.setResultListener(new CameraFragmentResultListener() {
+            //    @Override
+            //    public void onVideoRecorded(String filePath) {
+            //        Intent intent = PreviewActivity.newIntentVideo(MainActivity.this, filePath);
+            //        startActivityForResult(intent, REQUEST_PREVIEW_CODE);
+            //    }
+//
+            //    @Override
+            //    public void onPhotoTaken(byte[] bytes, String filePath) {
+            //        Intent intent = PreviewActivity.newIntentPhoto(MainActivity.this, filePath);
+            //        startActivityForResult(intent, REQUEST_PREVIEW_CODE);
+            //    }
+            //});
 
             cameraFragment.setStateListener(new CameraFragmentStateListener() {
 
