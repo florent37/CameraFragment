@@ -146,7 +146,8 @@ public class MainActivity extends AppCompatActivity {
         addCameraButton.setVisibility(View.GONE);
         cameraLayout.setVisibility(View.VISIBLE);
 
-        final CameraFragment cameraFragment = CameraFragment.newInstance(new Configuration.Builder().build());
+        final CameraFragment cameraFragment = CameraFragment.newInstance(new Configuration.Builder()
+                .setCamera(Configuration.CAMERA_FACE_FRONT).build());
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, cameraFragment, FRAGMENT_TAG)
                 .commit();

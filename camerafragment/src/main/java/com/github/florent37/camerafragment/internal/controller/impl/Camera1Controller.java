@@ -6,8 +6,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
-import java.io.File;
-
 import com.github.florent37.camerafragment.configuration.Configuration;
 import com.github.florent37.camerafragment.configuration.ConfigurationProvider;
 import com.github.florent37.camerafragment.internal.controller.CameraController;
@@ -22,6 +20,8 @@ import com.github.florent37.camerafragment.internal.ui.view.AutoFitSurfaceView;
 import com.github.florent37.camerafragment.internal.utils.CameraHelper;
 import com.github.florent37.camerafragment.internal.utils.Size;
 import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
+
+import java.io.File;
 
 /*
  * Created by memfis on 7/7/16.
@@ -101,14 +101,15 @@ public class Camera1Controller implements CameraController<Integer>,
     public void switchCamera(@Configuration.CameraFace final int cameraFace) {
         final Integer backCameraId = cameraManager.getFaceBackCameraId();
         final Integer frontCameraId = cameraManager.getFaceFrontCameraId();
+        final Integer currentCameraId = cameraManager.getCurrentCameraId();
 
-        if(cameraManager.getCurrentCameraId().equals(frontCameraId)){
+        if (cameraFace == Configuration.CAMERA_FACE_REAR && backCameraId != null && !backCameraId.equals(currentCameraId)) {
             setCurrentCameraId(backCameraId);
-        } else {
+            cameraManager.closeCamera(this);
+        } else if (frontCameraId != null && !frontCameraId.equals(currentCameraId)) {
             setCurrentCameraId(frontCameraId);
+            cameraManager.closeCamera(this);
         }
-
-        cameraManager.closeCamera(this);
     }
 
     @Override

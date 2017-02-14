@@ -8,8 +8,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.TextureView;
 
-import java.io.File;
-
 import com.github.florent37.camerafragment.configuration.Configuration;
 import com.github.florent37.camerafragment.configuration.ConfigurationProvider;
 import com.github.florent37.camerafragment.internal.controller.CameraController;
@@ -24,6 +22,8 @@ import com.github.florent37.camerafragment.internal.ui.view.AutoFitTextureView;
 import com.github.florent37.camerafragment.internal.utils.CameraHelper;
 import com.github.florent37.camerafragment.internal.utils.Size;
 import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
+
+import java.io.File;
 
 /*
  * Created by memfis on 7/6/16.
@@ -96,10 +96,18 @@ public class Camera2Controller implements CameraController<String>,
 
     @Override
     public void switchCamera(final @Configuration.CameraFace int cameraFace) {
-        setCurrentCameraId(camera2Manager.getCurrentCameraId().equals(camera2Manager.getFaceFrontCameraId()) ?
-                camera2Manager.getFaceBackCameraId() : camera2Manager.getFaceFrontCameraId());
+        final String currentCameraId = camera2Manager.getCurrentCameraId();
+        final String faceFrontCameraId = camera2Manager.getFaceFrontCameraId();
+        final String faceBackCameraId = camera2Manager.getFaceBackCameraId();
 
-        camera2Manager.closeCamera(this);
+        if (cameraFace == Configuration.CAMERA_FACE_REAR && faceBackCameraId != null && !faceBackCameraId.equals(currentCameraId)) {
+            setCurrentCameraId(faceBackCameraId);
+            camera2Manager.closeCamera(this);
+        } else if (faceFrontCameraId != null && !faceFrontCameraId.equals(currentCameraId)) {
+            setCurrentCameraId(faceFrontCameraId);
+            camera2Manager.closeCamera(this);
+        }
+
     }
 
     private void setCurrentCameraId(String currentCameraId){
