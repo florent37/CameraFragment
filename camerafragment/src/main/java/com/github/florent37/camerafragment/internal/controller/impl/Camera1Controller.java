@@ -77,13 +77,23 @@ public class Camera1Controller implements CameraController<Integer>,
 
     @Override
     public void takePhoto(CameraFragmentResultListener callback) {
-        outputFile = CameraHelper.getOutputMediaFile(context, Configuration.MEDIA_ACTION_PHOTO);
+        takePhoto(callback, null, null);
+    }
+
+    @Override
+    public void takePhoto(CameraFragmentResultListener callback, @Nullable String direcoryPath, @Nullable String fileName) {
+        outputFile = CameraHelper.getOutputMediaFile(context, Configuration.MEDIA_ACTION_PHOTO, direcoryPath, fileName);
         cameraManager.takePhoto(outputFile, this, callback);
     }
 
     @Override
     public void startVideoRecord() {
-        outputFile = CameraHelper.getOutputMediaFile(context, Configuration.MEDIA_ACTION_VIDEO);
+        startVideoRecord(null, null);
+    }
+
+    @Override
+    public void startVideoRecord(@Nullable String direcoryPath, @Nullable String fileName) {
+        outputFile = CameraHelper.getOutputMediaFile(context, Configuration.MEDIA_ACTION_VIDEO, direcoryPath, fileName);
         cameraManager.startVideoRecord(outputFile, this);
     }
 
@@ -141,7 +151,6 @@ public class Camera1Controller implements CameraController<Integer>,
     public Integer getCurrentCameraId() {
         return currentCameraId;
     }
-
 
     @Override
     public void onCameraOpened(Integer cameraId, Size previewSize, SurfaceHolder.Callback surfaceCallback) {

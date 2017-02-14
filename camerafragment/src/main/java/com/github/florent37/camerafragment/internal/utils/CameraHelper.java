@@ -8,8 +8,11 @@ import android.hardware.camera2.CameraManager;
 import android.media.CamcorderProfile;
 import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.github.florent37.camerafragment.configuration.Configuration;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -20,8 +23,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import com.github.florent37.camerafragment.configuration.Configuration;
-
 /*
  * Created by memfis on 7/6/16.
  * <p/>
@@ -30,10 +31,10 @@ import com.github.florent37.camerafragment.configuration.Configuration;
 public final class CameraHelper {
 
     public final static String TAG = "CameraHelper";
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
 
 
     private CameraHelper() {
-
     }
 
     public static boolean hasCamera(Context context) {
@@ -72,9 +73,14 @@ public final class CameraHelper {
         }
     }
 
-    public static File getOutputMediaFile(Context context, @Configuration.MediaAction int mediaAction) {
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), context.getPackageName());
+    public static File generateStorageDir(Context context, @Nullable String pathToDirectory) {
+        File mediaStorageDir = null;
+        if (pathToDirectory != null) {
+            mediaStorageDir = new File(pathToDirectory);
+        } else {
+            new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES), context.getPackageName());
+        }
 
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
@@ -83,16 +89,29 @@ public final class CameraHelper {
             }
         }
 
-        String timeStamp = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());
-        File mediaFile;
-        if (mediaAction == Configuration.MEDIA_ACTION_PHOTO) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_" + timeStamp + ".jpg");
-        } else if (mediaAction == Configuration.MEDIA_ACTION_VIDEO) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "VID_" + timeStamp + ".mp4");
-        } else {
-            return null;
+        return mediaStorageDir;
+    }
+
+    public static File getOutputMediaFile(Context context, @Configuration.MediaAction int mediaAction, @Nullable String pathToDirectory, @Nullable String fileName) {
+        final File mediaStorageDir = generateStorageDir(context, pathToDirectory);
+        File mediaFile = null;
+
+        if (mediaStorageDir != null) {
+            if (fileName == null) {
+                final String timeStamp = simpleDateFormat.format(new Date());
+                if (mediaAction == Configuration.MEDIA_ACTION_PHOTO) {
+                    fileName = "IMG_" + timeStamp;
+                } else if (mediaAction == Configuration.MEDIA_ACTION_VIDEO) {
+                    fileName = "VID_" + timeStamp;
+                }
+
+            }
+            final String mediaStorageDirPath = mediaStorageDir.getPath();
+            if (mediaAction == Configuration.MEDIA_ACTION_PHOTO) {
+                mediaFile = new File(mediaStorageDirPath + File.separator + fileName + ".jpg");
+            } else if (mediaAction == Configuration.MEDIA_ACTION_VIDEO) {
+                mediaFile = new File(mediaStorageDirPath + File.separator + fileName + ".mp4");
+            }
         }
 
         return mediaFile;

@@ -74,13 +74,23 @@ public class Camera2Controller implements CameraController<String>,
 
     @Override
     public void takePhoto(CameraFragmentResultListener callback) {
-        outputFile = CameraHelper.getOutputMediaFile(context, Configuration.MEDIA_ACTION_PHOTO);
+        takePhoto(callback, null, null);
+    }
+
+    @Override
+    public void takePhoto(CameraFragmentResultListener callback, @Nullable String direcoryPath, @Nullable String fileName) {
+        outputFile = CameraHelper.getOutputMediaFile(context, Configuration.MEDIA_ACTION_PHOTO, direcoryPath, fileName);
         camera2Manager.takePhoto(outputFile, this, callback);
     }
 
     @Override
     public void startVideoRecord() {
-        outputFile = CameraHelper.getOutputMediaFile(context, Configuration.MEDIA_ACTION_VIDEO);
+        startVideoRecord(null, null);
+    }
+
+    @Override
+    public void startVideoRecord(@Nullable String direcoryPath, @Nullable String fileName) {
+        outputFile = CameraHelper.getOutputMediaFile(context, Configuration.MEDIA_ACTION_VIDEO, direcoryPath, fileName);
         camera2Manager.startVideoRecord(outputFile, this);
     }
 

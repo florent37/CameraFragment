@@ -1,6 +1,7 @@
 package com.github.florent37.camerafragment.internal.controller;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import java.io.File;
 
@@ -23,7 +24,11 @@ public interface CameraController<CameraId> {
 
     void takePhoto(CameraFragmentResultListener resultListener);
 
+    void takePhoto(CameraFragmentResultListener callback, @Nullable String direcoryPath, @Nullable String fileName);
+
     void startVideoRecord();
+
+    void startVideoRecord(@Nullable String direcoryPath, @Nullable String fileName);
 
     void stopVideoRecord(CameraFragmentResultListener callback);
 

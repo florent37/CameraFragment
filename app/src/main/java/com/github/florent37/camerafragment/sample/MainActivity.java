@@ -97,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
                 public void onPhotoTaken(byte[] bytes, String filePath) {
                     Toast.makeText(getBaseContext(), "onPhotoTaken " + filePath, Toast.LENGTH_SHORT).show();
                 }
-            });
+            },
+            "/storage/self/primary",
+            "photo0");
         }
     }
 

@@ -281,9 +281,14 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
 
     @Override
     public void takePhotoOrCaptureVideo(final CameraFragmentResultListener resultListener) {
+        takePhotoOrCaptureVideo(resultListener, null, null);
+    }
+
+    @Override
+    public void takePhotoOrCaptureVideo(final CameraFragmentResultListener resultListener, @Nullable String directoryPath, @Nullable String fileName) {
         switch (currentMediaActionState) {
             case MediaAction.ACTION_PHOTO:
-                takePhoto(resultListener);
+                takePhoto(resultListener, directoryPath, fileName);
                 break;
             case MediaAction.ACTION_VIDEO:
                 switch (currentRecordState) {
@@ -291,7 +296,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
                         stopRecording(resultListener);
                         break;
                     default:
-                        startRecording();
+                        startRecording(directoryPath, fileName);
                         break;
                 }
                 break;
@@ -589,24 +594,24 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
         return checkedIndex;
     }
 
-    protected void takePhoto(CameraFragmentResultListener callback) {
+    protected void takePhoto(CameraFragmentResultListener callback, @Nullable String directoryPath, @Nullable String fileName) {
         if (Build.VERSION.SDK_INT > MIN_VERSION_ICECREAM) {
             new MediaActionSound().play(MediaActionSound.SHUTTER_CLICK);
         }
         setRecordState(Record.TAKE_PHOTO_STATE);
-        this.cameraController.takePhoto(callback);
+        this.cameraController.takePhoto(callback, directoryPath, fileName);
         if (cameraFragmentStateListener != null) {
             cameraFragmentStateListener.onRecordStatePhoto();
         }
     }
 
-    protected void startRecording() {
+    protected void startRecording(@Nullable String directoryPath, @Nullable String fileName) {
         if (Build.VERSION.SDK_INT > MIN_VERSION_ICECREAM) {
             new MediaActionSound().play(MediaActionSound.START_VIDEO_RECORDING);
         }
 
         setRecordState(Record.RECORD_IN_PROGRESS_STATE);
-        this.cameraController.startVideoRecord();
+        this.cameraController.startVideoRecord(directoryPath, fileName);
 
         if (cameraFragmentStateListener != null) {
             cameraFragmentStateListener.onRecordStateVideoInProgress();
