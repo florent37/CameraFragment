@@ -14,8 +14,8 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:support-v4:"+ project.supportVersion
-    compile "com.android.support:appcompat-v7:"+ project.supportVersion
+    compile "com.android.support:support-v4:" + project.supportVersion
+    compile "com.android.support:appcompat-v7:" + project.supportVersion
 }
 
 task wrapper(type: Wrapper) {
@@ -48,7 +48,5 @@ ext {
     allLicenses = ["Apache-2.0"]
 }
 
-if (project.rootProject.file('local.properties').exists()) {
-    apply from: rootProject.file('gradle/install-v1.gradle')
-    apply from: rootProject.file('gradle/bintray-android-v1.gradle')
-}
+apply from: rootProject.file('gradle/install-v1.gradle')
+apply from: rootProject.file('gradle/bintray-android-v1.gradle')
