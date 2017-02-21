@@ -424,6 +424,10 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
 
         onCameraTypeFrontBackChanged();
         this.cameraController.switchCamera(cameraFace);
+
+        if (cameraFragmentControlsListener != null) {
+            cameraFragmentControlsListener.unLockControls();
+        }
     }
 
     protected void setCameraTypeFrontBack(@Configuration.CameraFace int cameraFace) {
