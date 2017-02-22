@@ -110,10 +110,10 @@ public class Camera2Controller implements CameraController<String>,
         final String faceFrontCameraId = camera2Manager.getFaceFrontCameraId();
         final String faceBackCameraId = camera2Manager.getFaceBackCameraId();
 
-        if (cameraFace == Configuration.CAMERA_FACE_REAR && faceBackCameraId != null && !faceBackCameraId.equals(currentCameraId)) {
+        if (cameraFace == Configuration.CAMERA_FACE_REAR && faceBackCameraId != null) {
             setCurrentCameraId(faceBackCameraId);
             camera2Manager.closeCamera(this);
-        } else if (faceFrontCameraId != null && !faceFrontCameraId.equals(currentCameraId)) {
+        } else if (faceFrontCameraId != null) {
             setCurrentCameraId(faceFrontCameraId);
             camera2Manager.closeCamera(this);
         }
