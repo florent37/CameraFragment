@@ -113,7 +113,7 @@ public class Camera1Controller implements CameraController<Integer>,
         final Integer frontCameraId = cameraManager.getFaceFrontCameraId();
         final Integer currentCameraId = cameraManager.getCurrentCameraId();
 
-        if (cameraFace == Configuration.CAMERA_FACE_REAR && backCameraId != null && !backCameraId.equals(currentCameraId)) {
+        if (cameraFace == Configuration.CAMERA_FACE_REAR && backCameraId != null) {
             setCurrentCameraId(backCameraId);
             cameraManager.closeCamera(this);
         } else if (frontCameraId != null && !frontCameraId.equals(currentCameraId)) {
