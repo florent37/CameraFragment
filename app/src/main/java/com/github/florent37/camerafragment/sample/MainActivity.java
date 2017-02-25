@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 .setCamera(Configuration.CAMERA_FACE_REAR).build());
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, cameraFragment, FRAGMENT_TAG)
-                .commit();
+                .commitAllowingStateLoss();
 
         if (cameraFragment != null) {
             //cameraFragment.setResultListener(new CameraFragmentResultListener() {
