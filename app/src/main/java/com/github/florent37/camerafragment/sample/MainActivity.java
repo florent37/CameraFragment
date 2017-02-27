@@ -16,10 +16,10 @@ import android.widget.Toast;
 import com.github.florent37.camerafragment.CameraFragment;
 import com.github.florent37.camerafragment.CameraFragmentApi;
 import com.github.florent37.camerafragment.configuration.Configuration;
-import com.github.florent37.camerafragment.listeners.CameraFragmentControlsListener;
-import com.github.florent37.camerafragment.listeners.CameraFragmentResultListener;
-import com.github.florent37.camerafragment.listeners.CameraFragmentStateListener;
-import com.github.florent37.camerafragment.listeners.CameraFragmentVideoRecordTextListener;
+import com.github.florent37.camerafragment.listeners.CameraFragmentControlsAdapter;
+import com.github.florent37.camerafragment.listeners.CameraFragmentResultAdapter;
+import com.github.florent37.camerafragment.listeners.CameraFragmentStateAdapter;
+import com.github.florent37.camerafragment.listeners.CameraFragmentVideoRecordTextAdapter;
 import com.github.florent37.camerafragment.widgets.CameraSettingsView;
 import com.github.florent37.camerafragment.widgets.CameraSwitchView;
 import com.github.florent37.camerafragment.widgets.FlashSwitchView;
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRecordButtonClicked() {
         final CameraFragmentApi cameraFragment = getCameraFragment();
         if (cameraFragment != null) {
-            cameraFragment.takePhotoOrCaptureVideo(new CameraFragmentResultListener() {
+            cameraFragment.takePhotoOrCaptureVideo(new CameraFragmentResultAdapter() {
                 @Override
                 public void onVideoRecorded(String filePath) {
                     Toast.makeText(getBaseContext(), "onVideoRecorded " + filePath, Toast.LENGTH_SHORT).show();
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             //    }
             //});
 
-            cameraFragment.setStateListener(new CameraFragmentStateListener() {
+            cameraFragment.setStateListener(new CameraFragmentStateAdapter() {
 
                 @Override
                 public void onCurrentCameraBack() {
@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            cameraFragment.setControlsListener(new CameraFragmentControlsListener() {
+            cameraFragment.setControlsListener(new CameraFragmentControlsAdapter() {
                 @Override
                 public void lockControls() {
                     cameraSwitchView.setEnabled(false);
@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            cameraFragment.setTextListener(new CameraFragmentVideoRecordTextListener() {
+            cameraFragment.setTextListener(new CameraFragmentVideoRecordTextAdapter() {
                 @Override
                 public void setRecordSizeText(long size, String text) {
                     recordSizeText.setText(text);
