@@ -18,10 +18,11 @@ allprojects {
     }
 }
 
+//for Continuous Integration
 ext {
-    sdk = 25
-    buildTools = "25.0.2"
+    sdk = 24
+    buildTools = "24.0.2"
     minSdk = 10
     libraryVersion = "1.0.4"
-    supportVersion = "25.1.0"
+    supportVersion = "24.0.0"
 }
