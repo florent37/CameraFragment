@@ -1,5 +1,8 @@
 # CameraFragment
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-CameraFragment-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/5089)
+[![CircleCI](https://circleci.com/gh/florent37/CameraFragment/tree/master.svg?style=svg)](https://circleci.com/gh/florent37/CameraFragment/tree/master)
+
 A simple easy-to-integrate Camera Fragment for Android
 
 CameraFragment preview directly the camera view, and provides a easy API to capture or manage the device
