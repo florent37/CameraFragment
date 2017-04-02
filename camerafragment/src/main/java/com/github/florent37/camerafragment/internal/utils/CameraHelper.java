@@ -78,7 +78,7 @@ public final class CameraHelper {
         if (pathToDirectory != null) {
             mediaStorageDir = new File(pathToDirectory);
         } else {
-            new File(Environment.getExternalStoragePublicDirectory(
+            mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES), context.getPackageName());
         }
 
