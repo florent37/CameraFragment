@@ -280,11 +280,6 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     }
 
     @Override
-    public void takePhotoOrCaptureVideo(final CameraFragmentResultListener resultListener) {
-        takePhotoOrCaptureVideo(resultListener, null, null);
-    }
-
-    @Override
     public void takePhotoOrCaptureVideo(final CameraFragmentResultListener resultListener, @Nullable String directoryPath, @Nullable String fileName) {
         switch (currentMediaActionState) {
             case MediaAction.ACTION_PHOTO:
