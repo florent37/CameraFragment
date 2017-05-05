@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cancel_label">Cancelar</string>
+    <string name="ok_label">Ok</string>
+
+    <string name="settings_video_quality_title">Tamanho do vídeo %s</string>
+    <string name="settings_photo_quality_title">Tamanho da foto</string>
+
+    <!-- Preview Activity -->
+    <string name="preview_controls_confirm">Salvar</string>
+    <string name="preview_controls_retake">Repetir</string>
+    <string name="preview_controls_cancel">Cancelar</string>
+    <string name="preview_controls_crop">Recortar</string>
+    <string name="preview_controls_original_ratio_label">Original</string>
+</resources>
