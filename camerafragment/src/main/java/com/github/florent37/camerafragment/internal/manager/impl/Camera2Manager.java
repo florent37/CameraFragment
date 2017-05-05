@@ -267,6 +267,9 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
             backgroundHandler.post(new Runnable() {
                 @Override
                 public void run() {
+                    // Tzutalin++ 2017/05. If calling release function, it should not be executed
+                    if (context == null) return;
+
                     closePreviewSession();
                     if (prepareVideoRecorder()) {
 
