@@ -13,8 +13,6 @@ import com.github.florent37.camerafragment.listeners.CameraFragmentVideoRecordTe
 
 public interface CameraFragmentApi {
 
-    void takePhotoOrCaptureVideo(CameraFragmentResultListener resultListener);
-
     void takePhotoOrCaptureVideo(CameraFragmentResultListener resultListener, @Nullable String directoryPath, @Nullable String fileName);
 
     void openSettingDialog();

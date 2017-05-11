@@ -188,7 +188,9 @@ public class MainActivityCustoms extends AppCompatActivity {
                 public void onPhotoTaken(byte[] bytes, String filePath) {
 
                 }
-            });
+            },
+            "/storage/self/primary",
+            "photo0");
         }
     }
 
