@@ -36,16 +36,19 @@ public class ImageSaver implements Runnable {
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public void run() {
-        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-        byte[] bytes = new byte[buffer.remaining()];
-        buffer.get(bytes);
         FileOutputStream output = null;
         try {
+            ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+            byte[] bytes = new byte[buffer.remaining()];
+            buffer.get(bytes);
             output = new FileOutputStream(file);
             output.write(bytes);
             imageSaverCallback.onSuccessFinish(bytes);
         } catch (IOException ignore) {
             Log.e(TAG, "Can't save the image file.");
+            imageSaverCallback.onError();
+        } catch (IllegalStateException e) {
+            Log.e(TAG, "Can't read the image file.", e);
             imageSaverCallback.onError();
         } finally {
             image.close();
