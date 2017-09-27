@@ -34,7 +34,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class CameraFragmentMainActivity extends AppCompatActivity {
 
     public static final String FRAGMENT_TAG = "camera";
     private static final int REQUEST_CAMERA_PERMISSIONS = 931;
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.camerafragment_activity_main);
         ButterKnife.bind(this);
     }
 
@@ -165,13 +165,13 @@ public class MainActivity extends AppCompatActivity {
             //cameraFragment.setResultListener(new CameraFragmentResultListener() {
             //    @Override
             //    public void onVideoRecorded(String filePath) {
-            //        Intent intent = PreviewActivity.newIntentVideo(MainActivity.this, filePath);
+            //        Intent intent = PreviewActivity.newIntentVideo(CameraFragmentMainActivity.this, filePath);
             //        startActivityForResult(intent, REQUEST_PREVIEW_CODE);
             //    }
 //
             //    @Override
             //    public void onPhotoTaken(byte[] bytes, String filePath) {
-            //        Intent intent = PreviewActivity.newIntentPhoto(MainActivity.this, filePath);
+            //        Intent intent = PreviewActivity.newIntentPhoto(CameraFragmentMainActivity.this, filePath);
             //        startActivityForResult(intent, REQUEST_PREVIEW_CODE);
             //    }
             //});

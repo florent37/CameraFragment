@@ -28,7 +28,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivityCustoms extends AppCompatActivity {
+public class CameraFragmentMainActivityCustoms extends AppCompatActivity {
 
     private static final int REQUEST_CAMERA_PERMISSIONS = 931;
     private static final int REQUEST_PREVIEW_CODE = 1001;
@@ -47,7 +47,7 @@ public class MainActivityCustoms extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_customs);
+        setContentView(R.layout.camerafragment_activity_main_customs);
         ButterKnife.bind(this);
     }
 
@@ -71,13 +71,13 @@ public class MainActivityCustoms extends AppCompatActivity {
             cameraFragment.setResultListener(new CameraFragmentResultListener() {
                 @Override
                 public void onVideoRecorded(String filePath) {
-                    Intent intent = PreviewActivity.newIntentVideo(MainActivityCustoms.this, filePath);
+                    Intent intent = PreviewActivity.newIntentVideo(CameraFragmentMainActivityCustoms.this, filePath);
                     startActivityForResult(intent, REQUEST_PREVIEW_CODE);
                 }
 
                 @Override
                 public void onPhotoTaken(byte[] bytes, String filePath) {
-                    Intent intent = PreviewActivity.newIntentPhoto(MainActivityCustoms.this, filePath);
+                    Intent intent = PreviewActivity.newIntentPhoto(CameraFragmentMainActivityCustoms.this, filePath);
                     startActivityForResult(intent, REQUEST_PREVIEW_CODE);
                 }
             });
