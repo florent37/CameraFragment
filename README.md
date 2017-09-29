@@ -9,7 +9,7 @@ CameraFragment preview directly the camera view, and provides a easy API to capt
 
 You can setup your own layout and control the camera using CameraFragment
 
-<a href="com.github.florent37.florent.champigny">
+<a href="https://play.google.com/store/apps/details?id=com.github.florent37.florent.champigny">
   <img alt="Android app on Google Play" src="https://developer.android.com/images/brand/en_app_rgb_wo_45.png" />
 </a>
 
@@ -158,7 +158,7 @@ Author: Florent Champigny [http://www.florentchampigny.com/](http://www.florentc
 
 Blog : [http://www.tutos-android-france.com/](http://www.www.tutos-android-france.com/)
 
-<a href="com.github.florent37.florent.champigny">
+<a href="https://play.google.com/store/apps/details?id=com.github.florent37.florent.champigny">
   <img alt="Android app on Google Play" src="https://developer.android.com/images/brand/en_app_rgb_wo_45.png" />
 </a>
 <a href="https://plus.google.com/+florentchampigny">
