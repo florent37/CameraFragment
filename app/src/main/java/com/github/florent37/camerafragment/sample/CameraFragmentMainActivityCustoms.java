@@ -24,7 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -35,14 +35,14 @@ public class CameraFragmentMainActivityCustoms extends AppCompatActivity {
 
     public static final String FRAGMENT_TAG = "camera";
 
-    @Bind(R.id.settings_view) Button settingsView;
-    @Bind(R.id.flash_switch_view) Button flashSwitchView;
-    @Bind(R.id.front_back_camera_switcher) Button cameraSwitchView;
-    @Bind(R.id.record_button) Button recordButton;
-    @Bind(R.id.photo_video_camera_switcher) Button mediaActionSwitchView;
+    @BindView(R.id.settings_view) Button settingsView;
+    @BindView(R.id.flash_switch_view) Button flashSwitchView;
+    @BindView(R.id.front_back_camera_switcher) Button cameraSwitchView;
+    @BindView(R.id.record_button) Button recordButton;
+    @BindView(R.id.photo_video_camera_switcher) Button mediaActionSwitchView;
 
-    @Bind(R.id.cameraLayout) View cameraLayout;
-    @Bind(R.id.addCameraButton) View addCameraButton;
+    @BindView(R.id.cameraLayout) View cameraLayout;
+    @BindView(R.id.addCameraButton) View addCameraButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

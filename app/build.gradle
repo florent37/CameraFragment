@@ -15,6 +15,6 @@ android {
 
 dependencies {
     compile "com.android.support:appcompat-v7:" + project.supportVersion
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.8.1'
     compile project(':camerafragment')
 }

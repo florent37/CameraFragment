@@ -552,6 +552,8 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     //}
 
     protected void setFlashMode(@Flash.FlashMode int mode) {
+        if (mode == currentFlashMode)
+            return;
         this.currentFlashMode = mode;
         onFlashModeChanged();
     }

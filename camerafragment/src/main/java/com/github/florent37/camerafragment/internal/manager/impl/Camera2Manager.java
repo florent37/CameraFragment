@@ -701,6 +701,9 @@ public final class Camera2Manager extends BaseCameraManager<String, TextureView.
     }
 
     private void setFlashModeAndBuildPreviewRequest(@Configuration.FlashMode int flashMode) {
+        // at init-phase we often do not have a previewRequestBuilder, so ignore that FlashBuildRequest and leave the default
+        if (previewRequestBuilder == null)
+            return;
         try {
 
             switch (flashMode) {
