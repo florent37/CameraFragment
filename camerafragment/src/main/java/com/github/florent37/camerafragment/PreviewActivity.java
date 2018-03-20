@@ -145,9 +145,9 @@ public class PreviewActivity extends AppCompatActivity implements View.OnClickLi
         mediaAction = args.getInt(MEDIA_ACTION_ARG);
         previewFilePath = args.getString(FILE_PATH_ARG);
 
-        if (mediaAction == Configuration.MEDIA_ACTION_VIDEO) {
+        if (mediaAction == MediaAction.ACTION_VIDEO) {
             displayVideo(savedInstanceState);
-        } else if (mediaAction == Configuration.MEDIA_ACTION_PHOTO) {
+        } else if (mediaAction == MediaAction.ACTION_PHOTO) {
             displayImage();
         } else {
             String mimeType = Utils.getMimeType(previewFilePath);
