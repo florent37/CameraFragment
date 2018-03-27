@@ -50,6 +50,7 @@ import com.github.florent37.camerafragment.listeners.CameraFragmentStateListener
 import com.github.florent37.camerafragment.listeners.CameraFragmentVideoRecordTextListener;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /*
  * Created by memfis on 12/1/16.
@@ -341,6 +342,15 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
         } else {
             this.countDownTimer = new TimerTask(timerCallBack);
         }
+    }
+
+    public PhotoQualityOption[] getPhotoQualities() {
+        ArrayList<PhotoQualityOption> photoQualityOptions = new ArrayList<>();
+
+        for (CharSequence photoQualitie: photoQualities) {
+            photoQualityOptions.add((PhotoQualityOption) photoQualitie);
+        }
+        return photoQualityOptions.toArray(new PhotoQualityOption[photoQualityOptions.size()]);
     }
 
     @Override
