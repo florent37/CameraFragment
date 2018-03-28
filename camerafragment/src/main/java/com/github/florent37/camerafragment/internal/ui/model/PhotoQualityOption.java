@@ -12,11 +12,17 @@ public class PhotoQualityOption implements CharSequence {
     @Configuration.MediaQuality
     private int mediaQuality;
     private String title;
+    private Size size;
 
     public PhotoQualityOption(@Configuration.MediaQuality int mediaQuality, Size size) {
         this.mediaQuality = mediaQuality;
+        this.size = size;
 
         title = String.valueOf(size.getWidth()) + " x " + String.valueOf(size.getHeight());
+    }
+
+    public Size getSize() {
+        return size;
     }
 
     @Configuration.MediaQuality
