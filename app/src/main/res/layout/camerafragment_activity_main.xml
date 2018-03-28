@@ -39,8 +39,10 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 />
 
             <com.github.florent37.camerafragment.widgets.FlashSwitchView
@@ -54,13 +56,14 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 />
 
         </RelativeLayout>
 
-        <!--android:background="#82000000"-->
         <RelativeLayout
             android:id="@+id/record_panel"
             android:layout_width="match_parent"
@@ -84,8 +87,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/record_button"
+                android:layout_toStartOf="@id/record_button"
                 android:textColor="@android:color/white"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:visibility="invisible" />
 
             <TextView
@@ -94,8 +98,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/record_button"
+                android:layout_toEndOf="@id/record_button"
                 android:textColor="@android:color/white"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:visibility="invisible" />
 
             <com.github.florent37.camerafragment.widgets.MediaActionSwitchView
