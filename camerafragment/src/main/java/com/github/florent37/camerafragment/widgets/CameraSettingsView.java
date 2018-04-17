@@ -1,17 +1,16 @@
 package com.github.florent37.camerafragment.widgets;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.widget.ImageButton;
 
 import com.github.florent37.camerafragment.R;
 
 /*
  * Created by memfis on 8/23/16.
+ * Updated by amadeu01 on 17/04/17
  */
-public class CameraSettingsView extends ImageButton {
+public class CameraSettingsView extends android.support.v7.widget.AppCompatImageButton {
 
     public CameraSettingsView(Context context) {
         this(context, null);
@@ -23,12 +22,6 @@ public class CameraSettingsView extends ImageButton {
 
     public CameraSettingsView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public CameraSettingsView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
 

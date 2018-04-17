@@ -5,19 +5,17 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.ImageButton;
 
 import com.github.florent37.camerafragment.R;
 
 
 /*
  * Created by memfis on 7/6/16.
+ * Updated by amadeu01 on 17/04/17
  */
-public class FlashSwitchView extends ImageButton {
+public class FlashSwitchView extends android.support.v7.widget.AppCompatImageButton {
 
     private Drawable flashOnDrawable;
     private Drawable flashOffDrawable;

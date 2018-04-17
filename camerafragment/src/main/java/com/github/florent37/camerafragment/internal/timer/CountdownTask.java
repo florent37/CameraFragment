@@ -1,7 +1,6 @@
 package com.github.florent37.camerafragment.internal.timer;
 
-import android.graphics.Color;
-
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import com.github.florent37.camerafragment.internal.utils.DateTimeUtils;
@@ -28,7 +27,8 @@ public class CountdownTask extends TimerTaskBase implements Runnable {
 
         if (callback != null) {
             callback.setText(
-                    String.format("%02d:%02d",
+                    String.format(Locale.getDefault(),
+                            "%02d:%02d",
                             TimeUnit.MILLISECONDS.toMinutes(millis),
                             TimeUnit.MILLISECONDS.toSeconds(millis) -
                                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
@@ -52,7 +52,8 @@ public class CountdownTask extends TimerTaskBase implements Runnable {
         recordingTimeSeconds = maxDurationMilliseconds / 1000;
         if (callback != null) {
             callback.setText(
-                    String.format("%02d:%02d",
+                    String.format(Locale.getDefault(),
+                            "%02d:%02d",
                             TimeUnit.MILLISECONDS.toMinutes(maxDurationMilliseconds),
                             TimeUnit.MILLISECONDS.toSeconds(maxDurationMilliseconds) -
                                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(maxDurationMilliseconds))

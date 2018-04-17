@@ -1,6 +1,7 @@
 package com.github.florent37.camerafragment.sample;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+@SuppressLint("MissingPermission")
 public class CameraFragmentMainActivity extends AppCompatActivity {
 
     public static final String FRAGMENT_TAG = "camera";
