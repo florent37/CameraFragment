@@ -8,15 +8,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageButton;
 
 import com.github.florent37.camerafragment.R;
 import com.github.florent37.camerafragment.internal.utils.Utils;
 
 /*
  * Created by memfis on 6/24/16.
+ * Updated by amadeu01 on 17/04/17
  */
-public class MediaActionSwitchView extends ImageButton {
+public class MediaActionSwitchView extends android.support.v7.widget.AppCompatImageButton {
 
     @Nullable
     private OnMediaActionStateChangeListener onMediaActionStateChangeListener;
@@ -47,11 +47,11 @@ public class MediaActionSwitchView extends ImageButton {
 
         photoDrawable = ContextCompat.getDrawable(context, R.drawable.ic_photo_camera_white_24dp);
         photoDrawable = DrawableCompat.wrap(photoDrawable);
-        DrawableCompat.setTintList(photoDrawable.mutate(), ContextCompat.getColorStateList(context, R.drawable.switch_camera_mode_selector));
+        DrawableCompat.setTintList(photoDrawable.mutate(), ContextCompat.getColorStateList(context, R.color.switch_camera_mode_selector));
 
         videoDrawable = ContextCompat.getDrawable(context, R.drawable.ic_videocam_white_24dp);
         videoDrawable = DrawableCompat.wrap(videoDrawable);
-        DrawableCompat.setTintList(videoDrawable.mutate(), ContextCompat.getColorStateList(context, R.drawable.switch_camera_mode_selector));
+        DrawableCompat.setTintList(videoDrawable.mutate(), ContextCompat.getColorStateList(context, R.color.switch_camera_mode_selector));
 
         setBackgroundResource(R.drawable.circle_frame_background_dark);
 //        setBackgroundResource(R.drawable.circle_frame_background);
@@ -79,7 +79,7 @@ public class MediaActionSwitchView extends ImageButton {
         setImageDrawable(videoDrawable);
     }
 
-    public void setOnMediaActionStateChangeListener(OnMediaActionStateChangeListener onMediaActionStateChangeListener) {
+    public void setOnMediaActionStateChangeListener(@Nullable OnMediaActionStateChangeListener onMediaActionStateChangeListener) {
         this.onMediaActionStateChangeListener = onMediaActionStateChangeListener;
     }
 

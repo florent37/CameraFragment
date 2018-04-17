@@ -8,15 +8,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageButton;
 
 import com.github.florent37.camerafragment.R;
 import com.github.florent37.camerafragment.internal.utils.Utils;
 
 /*
  * Created by memfis on 7/6/16.
+ * Updated by amadeu01 on 17/04/17
  */
-public class RecordButton extends ImageButton {
+public class RecordButton extends android.support.v7.widget.AppCompatImageButton {
 
     public interface RecordButtonListener {
         void onRecordButtonClicked();

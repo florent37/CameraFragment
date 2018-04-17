@@ -1,5 +1,6 @@
 package com.github.florent37.camerafragment.internal.manager.impl;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.ImageFormat;
@@ -54,6 +55,7 @@ import java.util.Objects;
  * Created by memfis on 8/9/16.
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+@SuppressLint("MissingPermission")
 public final class Camera2Manager extends BaseCameraManager<String, TextureView.SurfaceTextureListener>
         implements ImageReader.OnImageAvailableListener, TextureView.SurfaceTextureListener {
 

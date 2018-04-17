@@ -2,6 +2,8 @@ package com.github.florent37.camerafragment.internal.timer;
 
 import com.github.florent37.camerafragment.internal.utils.DateTimeUtils;
 
+import java.util.Locale;
+
 /*
  * Created by florentchampigny on 13/01/2017.
  */
@@ -22,7 +24,13 @@ public class TimerTask extends TimerTaskBase implements Runnable {
         }
         if(callback != null) {
             callback.setText(
-                    String.format("%02d:%02d", recordingTimeMinutes, recordingTimeSeconds));
+                    String.format(
+                            Locale.getDefault(),
+                            "%02d:%02d",
+                            recordingTimeMinutes,
+                            recordingTimeSeconds
+                    )
+            );
         }
         if (alive) handler.postDelayed(this, DateTimeUtils.SECOND);
     }
@@ -33,7 +41,13 @@ public class TimerTask extends TimerTaskBase implements Runnable {
         recordingTimeSeconds = 0;
         if(callback != null) {
             callback.setText(
-                    String.format("%02d:%02d", recordingTimeMinutes, recordingTimeSeconds));
+                    String.format(
+                            Locale.getDefault(),
+                            "%02d:%02d",
+                            recordingTimeMinutes,
+                            recordingTimeSeconds
+                    )
+            );
             callback.setTextVisible(true);
         }
         handler.postDelayed(this, DateTimeUtils.SECOND);

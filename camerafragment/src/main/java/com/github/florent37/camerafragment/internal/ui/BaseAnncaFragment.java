@@ -1,5 +1,6 @@
 package com.github.florent37.camerafragment.internal.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -54,9 +55,10 @@ import java.util.ArrayList;
 
 /*
  * Created by memfis on 12/1/16.
- * Updated by Florent37
+ * Updated by amadeu01
  */
 
+@SuppressLint("WrongConstant")
 public abstract class BaseAnncaFragment<CameraId> extends Fragment implements CameraFragmentApi {
 
     public static final String ARG_CONFIGURATION = "configuration";
@@ -152,7 +154,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View decorView = ((Activity) container.getContext()).getWindow().getDecorView();
-        if (Build.VERSION.SDK_INT > MIN_VERSION_ICECREAM) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
             int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
             decorView.setSystemUiVisibility(uiOptions);
         }
@@ -347,8 +349,8 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     public PhotoQualityOption[] getPhotoQualities() {
         ArrayList<PhotoQualityOption> photoQualityOptions = new ArrayList<>();
 
-        for (CharSequence photoQualitie: photoQualities) {
-            photoQualityOptions.add((PhotoQualityOption) photoQualitie);
+        for (CharSequence photoQuality: photoQualities) {
+            photoQualityOptions.add((PhotoQualityOption) photoQuality);
         }
         return photoQualityOptions.toArray(new PhotoQualityOption[photoQualityOptions.size()]);
     }
@@ -604,7 +606,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     }
 
     protected void takePhoto(CameraFragmentResultListener callback, @Nullable String directoryPath, @Nullable String fileName) {
-        if (Build.VERSION.SDK_INT > MIN_VERSION_ICECREAM) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
             new MediaActionSound().play(MediaActionSound.SHUTTER_CLICK);
         }
         setRecordState(Record.TAKE_PHOTO_STATE);
@@ -615,7 +617,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     }
 
     protected void startRecording(@Nullable String directoryPath, @Nullable String fileName) {
-        if (Build.VERSION.SDK_INT > MIN_VERSION_ICECREAM) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
             new MediaActionSound().play(MediaActionSound.START_VIDEO_RECORDING);
         }
 
@@ -628,7 +630,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     }
 
     protected void stopRecording(CameraFragmentResultListener callback) {
-        if (Build.VERSION.SDK_INT > MIN_VERSION_ICECREAM) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
             new MediaActionSound().play(MediaActionSound.STOP_VIDEO_RECORDING);
         }
 
