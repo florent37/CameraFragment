@@ -152,6 +152,11 @@ compile 'com.github.florent37:camerafragment:1.0.10'
  
 Forked from [https://github.com/memfis19/Annca](https://github.com/memfis19/Annca)
 
+This library works, but on some devices... errors happens, I don't have time to maintain compatibility with all device
+A community group was created, they created CameraKit, don't hesitate to try it !
+
+https://github.com/CameraKit/camerakit-android
+
 # Credits
 
 Author: Florent Champigny [http://www.florentchampigny.com/](http://www.florentchampigny.com/)
