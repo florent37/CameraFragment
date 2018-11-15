@@ -569,7 +569,7 @@ public abstract class BaseAnncaFragment<CameraId> extends Fragment implements Ca
     }
 
     protected void rotateSettingsDialog(int degrees) {
-        if (settingsDialog != null && settingsDialog.isShowing() && Build.VERSION.SDK_INT > 10) {
+        if (settingsDialog != null && settingsDialog.isShowing() && Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
             ViewGroup dialogView = (ViewGroup) settingsDialog.getWindow().getDecorView();
             for (int i = 0; i < dialogView.getChildCount(); i++) {
                 dialogView.getChildAt(i).setRotation(degrees);
