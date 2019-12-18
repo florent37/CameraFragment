@@ -123,7 +123,7 @@ public class CameraFragmentMainActivity extends AppCompatActivity {
 
     @OnClick(R.id.addCameraButton)
     public void onAddCameraClicked() {
-        if (Build.VERSION.SDK_INT > 15) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
             final String[] permissions = {
                     Manifest.permission.CAMERA,
                     Manifest.permission.RECORD_AUDIO,

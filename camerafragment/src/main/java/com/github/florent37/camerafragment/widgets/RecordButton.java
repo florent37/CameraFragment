@@ -45,7 +45,7 @@ public class RecordButton extends android.support.v7.widget.AppCompatImageButton
         startRecordDrawable = ContextCompat.getDrawable(context, R.drawable.start_video_record_button);
         stopRecordDrawable = ContextCompat.getDrawable(context, R.drawable.stop_button_background);
 
-        if (Build.VERSION.SDK_INT > 15)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
             setBackground(ContextCompat.getDrawable(context, R.drawable.circle_frame_background));
         else
             setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.circle_frame_background));

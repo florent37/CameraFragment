@@ -86,7 +86,7 @@ public class MediaActionSwitchView extends android.support.v7.widget.AppCompatIm
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        if (Build.VERSION.SDK_INT > 10) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
             if (enabled) {
                 setAlpha(1f);
             } else {
